@@ -10,6 +10,9 @@ python = "^3.11"
 pytest = "^8.2.2"
 bs4 = "^0.0.2"
 aiohttp = "^3.9.5"
+feedparser = "^6.0.11"
+discord-py = "^2.4.0"
+python-dotenv = "^1.0.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
