@@ -4,7 +4,7 @@ from contextlib import contextmanager
 
 @contextmanager
 def dev_mode():
-    if os.getenv("ENVIRONMENT") == "development":
+    if ENVIRONMENT == "development":
         yield
     else:
         # print("This block is only run in development mode.")
@@ -13,7 +13,7 @@ def dev_mode():
 def only_dev_mode(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if os.getenv("ENVIRONMENT") == "development":
+        if ENVIRONMENT == "development":
             return func(*args, **kwargs)
         else:
             # print(f"{func.__name__} is only run in development mode.")
