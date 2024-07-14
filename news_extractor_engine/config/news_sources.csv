@@ -1,0 +1,269 @@
+Domain,Feed,Title,Category,Status,Score,OG-Images,Content Type,Creative Instance ID,Destination Domains,Channels,Status_Code
+https://brave.com/,https://brave.com/blog/index.xml,Brave Blog,Brave,Enabled,1.0,,article,,brave.com,Top Sources; Brave,200
+https://www.nytimes.com/,https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml,The New York Times,Top News,Enabled,5.74,On,article,,www.nytimes.com,Top Sources; Top News,200
+https://www.bbc.co.uk/,https://feeds.bbci.co.uk/news/rss.xml?edition=int,BBC,Top News,Enabled,3.22,,article,,www.bbc.co.uk,Top Sources; Top News,200
+https://www.foxnews.com/,https://feeds.foxnews.com/foxnews/latest,FOX News,Top News,Enabled,2.81,On,article,,www.foxnews.com,Top Sources; Top News,301
+https://www.theguardian.com/,https://www.theguardian.com/world/rss,The Guardian,Top News,Enabled,2.31,On,article,,www.theguardian.com,Top Sources; Top News,200
+https://www.washingtonpost.com/,https://www.washingtonpost.com/?outputType=rss,Washington Post,Top News,Enabled,2.3,,article,,www.washingtonpost.com,Top Sources; Top News,200
+https://www.nbcnews.com/,https://feeds.nbcnews.com/nbcnews/public/news,NBC News,Top News,Enabled,2.22,,article,,www.nbcnews.com,Top Sources; Top News,200
+https://abcnews.go.com/,https://abcnews.go.com/abcnews/topstories,ABC News,Top News,Enabled,1.49,On,article,,abcnews.go.com,Top Sources; Top News,200
+https://www.dailymail.co.uk/ushome/index.html,https://www.dailymail.co.uk/home/index.rss,Daily Mail,Top News,Enabled,1.42,On,article,,www.dailymail.co.uk,Top Sources; Top News,200
+https://nypost.com/,https://nypost.com/news/feed/,New York Post,Top News,Enabled,1.39,On,article,,nypost.com,Top Sources; Top News,301
+https://www.npr.org/,https://feeds.npr.org/1001/rss.xml,NPR,Top News,Enabled,1.06,,article,,www.npr.org,Top Sources; Top News,200
+https://www.wsj.com/,https://feeds.a.dj.com/rss/RSSWorldNews.xml,WSJ,Top News,Enabled,0.38,,article,,www.wsj.com,Top Sources; Top News,200
+https://www.latimes.com/,https://www.latimes.com/local/rss2.0.xml,LA Times,Top News,Disabled,0.07,,article,,www.latimes.com,Top Sources; Top News,200
+https://www.newsweek.com/,https://www.newsweek.com/rss,Newsweek,Top News,Disabled,-0.04,,article,,www.newsweek.com,Top Sources; Top News,200
+https://www.politico.com/,https://rss.politico.com/politics-news.xml,Politico,Top News,Disabled,-0.05,,article,,www.politico.com,Top Sources; Top News; Politics,200
+https://www.independent.co.uk/,https://www.independent.co.uk/rss,The Independent,Top News,Disabled,-0.33,,article,,www.independent.co.uk,Top Sources; Top News,200
+https://www.breitbart.com/,https://feeds.feedburner.com/breitbart,Breitbart,Top News,Disabled,-0.45,,article,,www.breitbart.com,Top Sources; Top News; Politics,200
+https://www.thehill.com/,https://thehill.com/rss/syndicator/19110,The Hill,Top News,Disabled,-0.47,,article,,thehill.com,Top Sources; Top News; Politics,301
+https://www.washingtontimes.com/,https://www.washingtontimes.com/rss/headlines/news/,The Washington Times,Top News,Disabled,-0.77,,article,,www.washingtontimes.com,Top Sources; Top News; Politics,200
+https://www.thedailybeast.com/,https://feeds.feedburner.com/thedailybeast/articles,The Daily Beast,Top News,Disabled,-0.8,,article,,www.thedailybeast.com,Top Sources; Top News,200
+https://www.telegraph.co.uk/,https://www.telegraph.co.uk/news/rss.xml,The Telegraph,Top News,Disabled,-0.85,,article,,www.telegraph.co.uk,Top Sources; Top News,200
+http://dailycaller.com/,https://dailycaller.com/section/us/feed/,Daily Caller,Top News,Disabled,-0.89,,article,,dailycaller.com,Top Sources; Top News; Politics,200
+https://www.theblaze.com/,https://www.theblaze.com/feeds/news.rss,The Blaze,Top News,Disabled,-0.97,,article,,www.theblaze.com,Top Sources; Top News; Politics,200
+https://www.cbc.ca/,https://www.cbc.ca/cmlink/rss-topstories,CBC,Top News,Disabled,-1.06,,article,,www.cbc.ca,Top Sources; Top News,301
+https://www.aljazeera.com/,https://www.aljazeera.com/xml/rss/all.xml,Al Jazeera,Top News,Disabled,-1.07,,article,,www.aljazeera.com,Top Sources; Top News,200
+https://www.smh.com.au/,https://www.smh.com.au/rss/feed.xml,Sydney Morning Herald,Top News,Disabled,-1.1,,article,,www.smh.com.au,Top Sources; Top News,200
+https://www.axios.com/,https://api.axios.com/feed/,Axios,Top News,Disabled,-1.14,On,article,,www.axios.com,Top Sources; Top News,200
+https://www.spiegel.de/,https://www.spiegel.de/international/index.rss,Der Spiegel,Top News,Disabled,-1.19,,article,,www.spiegel.de,Top Sources; Top News,200
+https://www.sky.com/,https://feeds.skynews.com/feeds/rss/world.xml,Sky News,Top News,Disabled,-1.28,On,article,,news.sky.com,Top Sources; Top News,200
+https://www.bostonglobe.com/,https://www.bostonglobe.com/rss/feedly.xml,The Boston Globe,Top News,Disabled,-1.28,,article,,www.bostonglobe.com,Top Sources; Top News,200
+https://www.euronews.com/,https://feeds.feedburner.com/euronews/en/home/,Euronews,Top News,Disabled,-1.32,,article,,www.euronews.com,Top Sources; Top News,200
+https://www.ft.com/,https://www.ft.com/rss/home/uk,Financial Times,Top News,Disabled,-1.33,,article,,www.ft.com,Top Sources; Top News; Business,200
+https://www.motherjones.com/,https://feeds.feedburner.com/motherjones/main,Mother Jones,Top News,Disabled,-1.33,,article,,www.motherjones.com,Top Sources; Top News; Politics,200
+https://www.csmonitor.com/,https://rss.csmonitor.com/feeds/top,The Christian Science Monitor,Top News,Disabled,-1.35,,article,,www.csmonitor.com,Top Sources; Top News,200
+https://www.propublica.org/,https://www.propublica.org/feeds/propublica/main,ProPublica,Top News,Disabled,-1.38,,article,,www.propublica.org,Top Sources; Top News,200
+https://newrepublic.com/,https://newrepublic.com/rss.xml,The New Republic,Top News,Disabled,-1.39,,article,,newrepublic.com,Top Sources; Top News; Politics,200
+https://www.democracynow.org/,https://www.democracynow.org/democracynow.rss,Democracy Now!,Top News,Disabled,-1.39,,article,,www.democracynow.org,Top Sources; Top News; Politics,200
+https://foreignpolicy.com/,https://foreignpolicy.com/feed/,Foreign Policy,Top News,Disabled,-1.4,,article,,foreignpolicy.com,Top Sources; Top News; Politics,200
+https://www.thenation.com/,https://www.thenation.com/feed/?post_type=article,The Nation,Top News,Disabled,-1.42,,article,,www.thenation.com,Top Sources; Top News; Politics,200
+https://www.huffpost.com/,https://www.huffpost.com/section/world-news/feed,HuffPost,Top News,Disabled,-1.43,,article,,www.huffpost.com,Top Sources; Top News,301
+https://finance.yahoo.com/,https://finance.yahoo.com/rss/topstories,Yahoo Finance,Business,Disabled,6.09,On,article,,www.barrons.com;www.marketwatch.com;www.investors.com;finance.yahoo.com;www.investopedia.com,Top Sources; Business,200
+https://www.fastcompany.com/,https://feeds.feedburner.com/fastcompany/headlines,Fast Company,Business,Enabled,3.66,,article,,www.fastcompany.com,Top Sources; Business,200
+https://www.forbes.com/,https://www.forbes.com/real-time/feed/,Forbes,Business,Enabled,3.61,,article,,www.forbes.com,Top Sources; Business,200
+https://www.wsj.com/,https://feeds.a.dj.com/rss/RSSMarketsMain.xml,WSJ - Markets,Business,Enabled,2.49,,article,,www.wsj.com,Top Sources; Business,200
+https://www.cnbc.com/,https://www.cnbc.com/id/100003114/device/rss/rss.html,CNBC,Business,Enabled,2.09,,article,,www.cnbc.com,Top Sources; Business,200
+https://www.businessinsider.com/,https://feeds2.feedburner.com/businessinsider,Business Insider,Business,Disabled,2.03,,article,,www.businessinsider.com;markets.businessinsider.com,Top Sources; Business,200
+https://www.entrepreneur.com/,https://feeds.feedburner.com/entrepreneur/latest,Entrepreneur,Business,Disabled,1.39,,article,,www.entrepreneur.com,Top Sources; Business,200
+https://www.marketwatch.com/,https://feeds.marketwatch.com/marketwatch/topstories/,MarketWatch,Business,Disabled,0.88,,article,,www.marketwatch.com,Top Sources; Business,301
+https://www.inc.com/,https://www.inc.com/rss/homepage.xml,Inc.com,Business,Disabled,0.72,,article,,www.inc.com,Top Sources; Business,200
+https://www.economist.com/,https://www.economist.com/business/rss.xml,The Economist,Business,Disabled,0.7,,article,,www.economist.com,Top Sources; Business,200
+https://www.freakonomics.com/,https://freakonomics.com/feed/,Freakonomics,Business,Disabled,-0.24,,article,,freakonomics.com,Top Sources; Business,200
+https://www.fool.com/,https://www.fool.com/a/feeds/foolwatch?format=rss2&id=foolwatch&apikey=foolwatch-feed,The Motley Fool,Business,Disabled,-0.31,,article,,www.fool.com,Top Sources; Business,200
+https://www.foxbusiness.com/,https://feeds.foxbusiness.com/foxbusiness/latest,FOX Business,Business,Disabled,-0.61,On,article,,www.foxbusiness.com,Top Sources; Business,301
+https://qz.com/,https://cms.qz.com/feed/,Quartz,Business,Disabled,-0.86,,article,,qz.com,Top Sources; Business,200
+https://www.psfk.com/,https://www.psfk.com/feeds/psfk,PSFK,Business,Disabled,-1.14,,article,,www.psfk.com,Top Sources; Business,404
+http://smallbiztrends.com/,https://feeds.feedburner.com/SmallBusinessTrends,Small Business Trends,Business,Disabled,-1.36,,article,,smallbiztrends.com,Top Sources; Business,200
+http://seekingalpha.com/,https://seekingalpha.com/feed.xml,Seeking Alpha,Business,Disabled,-1.39,,article,,seekingalpha.com,Top Sources; Business,200
+https://www.fortune.com/,https://fortune.com/feed/,Fortune,Business,Disabled,-1.45,,article,,fortune.com,Top Sources; Business,301
+https://www.ft.com/,https://www.ft.com/markets?format=rss,Financial Times - Markets,Business,Disabled,-1.66,,article,,www.ft.com,Top Sources; Business,200
+https://www.autoblog.com/,https://www.autoblog.com/rss.xml,Autoblog,Cars,Enabled,10.1,,article,,www.autoblog.com,Top Sources; Cars,200
+https://jalopnik.com/,https://jalopnik.com/rss,Jalopnik,Cars,Enabled,4.67,,article,,jalopnik.com,Top Sources; Cars,200
+https://www.caranddriver.com/,https://www.caranddriver.com/rss/all.xml/,Car and Driver,Cars,Enabled,4.33,,article,,www.caranddriver.com,Top Sources; Cars,200
+https://www.motor1.com/,https://www.motor1.com/rss/news/all/,Motor1,Cars,Disabled,3.43,,article,,www.motor1.com,Top Sources; Cars,200
+https://www.thetruthaboutcars.com/,https://www.thetruthaboutcars.com/feed/,The Truth About Cars,Cars,Disabled,1.88,,article,,www.thetruthaboutcars.com,Top Sources; Cars,301
+https://electrek.co,https://electrek.co/feed/,Electrek,Cars,Disabled,0.98,,article,,electrek.co,Top Sources; Cars,200
+https://insideevs.com/,https://insideevs.com/rss/articles/all/,InsideEVs,Cars,Disabled,1.0,,article,,insideevs.com,Top Sources; Cars,200
+https://carbuzz.com/,https://carbuzz.com/rss/news,CarBuzz,Cars,Disabled,1.02,,article,,carbuzz.com,Top Sources; Cars,301
+https://www.autosport.com/,https://www.autosport.com/rss/all/news/,Autosport,Cars,Disabled,0.5,,article,,www.autosport.com,Top Sources; Cars,200
+https://www.speedhunters.com,https://feeds.feedburner.com/Speedhunters,Speedhunters,Cars,Disabled,0.4,,article,,www.speedhunters.com,Top Sources; Cars,200
+https://www.carscoops.com/,https://www.carscoops.com/category/news/feed/,Carscoops,Cars,Disabled,0.35,,article,,www.carscoops.com,Top Sources; Cars,200
+https://www.bikeexif.com/,https://www.bikeexif.com/feed,Bike EXIF,Cars,Disabled,0.21,,article,,www.bikeexif.com,Top Sources; Cars,200
+https://www.thedrive.com/,https://api.thedrive.com/feed/?post_type=the_drive_article,The Drive,Cars,Disabled,0.44,,article,,www.thedrive.com,Top Sources; Cars,404
+https://www.autocar.co.uk/,https://www.autocar.co.uk/rss/latestnews,Autocar,Cars,Disabled,-0.18,,article,,www.autocar.co.uk,Top Sources; Cars,200
+https://bringatrailer.com/,https://bringatrailer.com/feed/,Bring A Trailer,Cars,Disabled,-0.21,,article,,bringatrailer.com,Top Sources; Cars,200
+https://paultan.org/,https://paultan.org/feed/,Paul Tan's Automotive News,Cars,Disabled,-0.4,,article,,paultan.org,Top Sources; Cars,200
+https://www.thecarconnection.com/,https://feeds.feedburner.com/MotorAuthority2,The Car Connection,Cars,Disabled,-0.43,,article,,www.motorauthority.com,Top Sources; Cars,200
+https://cointelegraph.com/,https://cointelegraph.com/rss,Cointelegraph,Crypto,Enabled,16.96,,article,,cointelegraph.com,Top Sources; Crypto,200
+https://bitcoinmagazine.com/,https://feeds.feedburner.com/BitcoinMagazine,Bitcoin Magazine,Crypto,Enabled,3.09,,article,,bitcoinmagazine.com,Top Sources; Crypto,200
+https://decrypt.co/,https://decrypt.co/feed/,Decrypt,Crypto,Enabled,2.23,,article,,decrypt.co,Top Sources; Crypto,200
+https://bitcoinist.com/,https://feeds.feedburner.com/bitcoinist/,Bitcoinist,Crypto,Enabled,1.96,,article,,bitcoinist.com,Top Sources; Crypto,200
+https://www.newsbtc.com/,https://www.newsbtc.com/feed/,NewsBTC,Crypto,Disabled,1.77,,article,,www.newsbtc.com,Top Sources; Crypto,200
+https://99bitcoins.com/,https://99bitcoins.com/feed/,99 Bitcoins,Crypto,Disabled,1.19,,article,,99bitcoins.com,Top Sources; Crypto,200
+https://cryptoslate.com/,https://cryptoslate.com/feed/,CryptoSlate,Crypto,Disabled,0.18,,article,,cryptoslate.com,Top Sources; Crypto,200
+https://www.financemagnates.com/,https://www.financemagnates.com/cryptocurrency/feed/,Finance Magnates,Crypto,Disabled,-0.07,,article,,www.financemagnates.com,Top Sources; Crypto,200
+https://crypto.news/,https://btcmanager.com/feed/,BTCMANAGER,Crypto,Disabled,-0.16,,article,,btcmanager.com,Top Sources; Crypto,301
+https://blockgeeks.com/,https://blockgeeks.com/feed/,Blockgeeks,Crypto,Disabled,-0.28,,article,,blockgeeks.com,Top Sources; Crypto,200
+https://cryptopotato.com/,https://cryptopotato.com/feed/,CryptoPotato,Crypto,Disabled,-0.3,,article,,cryptopotato.com,Top Sources; Crypto,200
+https://www.wikihow.com/Main-Page,https://www.wikihow.com/feed.rss,Wikihow,Culture,Enabled,11.09,On,article,,www.wikihow.com,Top Sources; Culture,200
+https://www.theatlantic.com/,https://feeds.feedburner.com/TheAtlantic,The Atlantic,Culture,Enabled,7.11,,article,,www.theatlantic.com,Top Sources; Culture; Politics,200
+https://www.ted.com/,https://feeds.feedburner.com/tedtalks_video,TED Talks,Culture,Enabled,6.61,On,article,,www.ted.com,Top Sources; Culture; Video,200
+https://www.vox.com/,https://www.vox.com/rss/index.xml,Vox,Culture,Enabled,6.21,,article,,www.vox.com,Top Sources; Culture,200
+https://www.slate.com/,https://slate.com/feeds/all.rss,Slate,Culture,Enabled,5.56,,article,,slate.com,Top Sources; Culture,200
+https://www.vice.com/,https://www.vice.com/en/rss?locale=en_us,VICE,Culture,Enabled,5.53,,article,,www.vice.com,Top Sources; Culture,200
+https://www.newyorker.com/,https://www.newyorker.com/feed/everything,The New Yorker,Culture,Disabled,3.96,,article,,www.newyorker.com,Top Sources; Culture,200
+https://boingboing.net/,https://boingboing.net/feed,Boing Boing,Culture,Disabled,2.27,,article,,boingboing.net,Top Sources; Culture,200
+https://www.themarginalian.org/,https://feeds.feedburner.com/brainpickings/rss,Brain Pickings,Culture,Disabled,1.94,,article,,www.themarginalian.org,Top Sources; Culture,200
+https://www.vanityfair.com/,https://www.vanityfair.com/feed/rss,Vanity Fair,Culture,Disabled,1.91,,article,,www.vanityfair.com,Top Sources; Culture,200
+https://coolhunting.com/,https://coolhunting.com/feed/atom/,Cool Hunting,Culture,Disabled,1.15,,article,,coolhunting.com,Top Sources; Culture,200
+https://www.complex.com/,https://assets.complex.com/feeds/channels/all.xml,Complex,Culture,Disabled,1.15,,article,,www.complex.com;solecollector.com,Top Sources; Culture,200
+https://www.mentalfloss.com/,https://www.mentalfloss.com/rss.xml,Mental Floss,Culture,Disabled,0.68,,article,,www.mentalfloss.com,Top Sources; Culture,301
+https://thoughtcatalog.com/,https://feeds.feedburner.com/ThoughtCatalog,Thought Catalog,Culture,Disabled,0.38,,article,,thoughtcatalog.com,Top Sources; Culture,200
+https://www.openculture.com/,https://feeds.feedburner.com/OpenCulture,Open Culture,Culture,Disabled,0.27,,article,,www.openculture.com,Top Sources; Culture,200
+https://www.salon.com/,https://www.salon.com/feed/,Salon.com,Culture,Disabled,0.05,,article,,www.salon.com,Top Sources; Culture,200
+https://www.postsecret.blogspot.com,https://postsecret.blogspot.com/feeds/posts/default,PostSecret,Culture,Disabled,-0.06,,article,,postsecret.blogspot.com,Top Sources; Culture,200
+https://www.upworthy.com/,https://feeds.feedburner.com/upworthy,Upworthy,Culture,Disabled,-0.11,,article,,biztoc.com,Top Sources; Culture,200
+https://www.kottke.org/,https://feeds.kottke.org/main,kottke.org,Culture,Disabled,-0.16,,article,,kottke.org,Top Sources; Culture,200
+https://www.nybooks.com/,https://feeds.feedburner.com/nybooks,The New York Review of Books,Culture,Disabled,-0.4,,article,,www.nybooks.com,Top Sources; Culture,200
+https://www.theroot.com/,https://www.theroot.com/rss/full,The Root,Culture,Disabled,-0.43,,article,,www.theroot.com,Top Sources; Culture,200
+https://www.tmz.com/,https://www.tmz.com/rss.xml,TMZ,Entertainment,Enabled,3.7,,article,,www.tmz.com,Top Sources; Entertainment,200
+https://www.rollingstone.com/,https://www.rollingstone.com/music/feed/,Rolling Stone,Entertainment,Enabled,2.19,,article,,www.rollingstone.com,Top Sources; Entertainment; Music,200
+https://variety.com/,https://feeds.feedburner.com/variety/headlines,Variety,Entertainment,Enabled,2.14,,article,,variety.com,Top Sources; Entertainment; Celebs; Film; TV,200
+https://www.indiewire.com/,https://www.indiewire.com/feed/,IndieWire,Entertainment,Enabled,1.04,On,article,,www.indiewire.com,Top Sources; Entertainment; Film,200
+https://www.io9.gizmodo.com,https://feeds.feedburner.com/io9/,io9,Entertainment,Disabled,1.01,,article,,gizmodo.com,Top Sources; Entertainment,200
+https://deadline.com/,https://deadline.com/feed/,Deadline,Entertainment,Disabled,0.9,,article,,deadline.com,Top Sources; Entertainment; Film,200
+https://www.slashfilm.com/,https://feeds.feedburner.com/slashfilm,SlashFilm,Entertainment,Disabled,0.82,,article,,www.slashfilm.com,Top Sources; Entertainment; Film,200
+https://www.ign.com/,https://feeds.ign.com/ign/reviews,IGN Reviews,Entertainment,Disabled,0.53,,article,,www.ign.com,Top Sources; Entertainment,302
+https://www.avclub.com/,https://www.avclub.com/rss,The A.V. Club,Entertainment,Disabled,0.42,,article,,www.avclub.com,Top Sources; Entertainment,200
+https://www.vanityfair.com/,https://www.vanityfair.com/feed/rss,Vanity Fair,Culture,Disabled,1.91,,article,,www.vanityfair.com,Top Sources; Culture,200
+https://www.firstshowing.net/,https://www.firstshowing.net/feed/?full,FirstShowing.net,Entertainment,Disabled,-0.01,On,article,,www.firstshowing.net,Top Sources; Entertainment,200
+https://www.etonline.com/,https://feeds.feedburner.com/ETTopStories,ET,Entertainment,Disabled,-0.16,,article,,www.etonline.com,Top Sources; Entertainment; Celebs; Film; TV,200
+https://www.usmagazine.com/,https://www.usmagazine.com/category/entertainment/feed/,Us Weekly,Entertainment,Disabled,-0.29,,article,,www.usmagazine.com,Top Sources; Entertainment; Celebs; Film; TV,200
+https://www.flavorwire.com/,https://feeds.feedburner.com/flavorwire-rss,Flavorwire,Entertainment,Disabled,-0.44,,article,,www.flavorwire.com,Top Sources; Entertainment,200
+https://filmschoolrejects.com/,https://feeds.feedburner.com/FilmSchoolRejects,Film School Rejects,Entertainment,Disabled,-0.5,,article,,filmschoolrejects.com,Top Sources; Entertainment,200
+https://www.aintitcool.com/,https://www.aintitcool.com/node/feed/,Ain't It Cool,Entertainment,Disabled,-0.58,,article,,www.aintitcool.com,Top Sources; Entertainment,200
+https://www.cinemablend.com/,https://www.cinemablend.com/rss/topic/news/movies,CinemaBlend,Entertainment,Disabled,-0.63,,article,,www.cinemablend.com,Top Sources; Entertainment,301
+https://hollywoodlife.com/,https://hollywoodlife.com/feed/,Hollywood Life,Entertainment,Disabled,-0.69,,article,,hollywoodlife.com,Top Sources; Entertainment,200
+https://tvline.com/,https://tvline.com/feed/,TVLine,Entertainment,Disabled,-0.87,,article,,tvline.com,Top Sources; Entertainment,200
+https://www.refinery29.com/en-us,https://www.refinery29.com/index.xml,Refinery29,Fashion,Enabled,7.95,,article,,www.refinery29.com,Top Sources; Fashion,200
+https://www.artofmanliness.com/,https://feeds2.feedburner.com/TheArtOfManliness,The Art of Manliness,Fashion,Enabled,5.71,,article,,www.artofmanliness.com,Top Sources; Fashion,200
+https://hypebeast.com/,https://feeds.feedburner.com/hypebeast/feed,Hypebeast,Fashion,Enabled,4.42,,article,,hypebeast.com,Top Sources; Fashion,200
+https://www.popsugar.com/,https://www.popsugar.com/feed,Popsugar,Fashion,Enabled,3.36,,article,,www.popsugar.com,Top Sources; Fashion,200
+https://uncrate.com/,https://feeds.feedburner.com/uncrate,Uncrate,Fashion,Enabled,3.11,,article,,uncrate.com,Top Sources; Fashion,200
+https://www.fashionista.com,https://feeds.feedburner.com/fashionistacom,Fashionista,Fashion,Enabled,3.03,,article,,fashionista.com,Top Sources; Fashion,200
+https://www.gq.com/,https://www.gq.com/feed/rss,GQ,Fashion,Disabled,2.62,,article,,www.gq.com,Top Sources; Fashion,200
+https://www.esquire.com/,https://www.esquire.com/rss/style.xml/,Esquire,Fashion,Disabled,2.1,,article,,www.esquire.com,Top Sources; Fashion,200
+https://www.whowhatwear.com/,https://feeds.whowhatwear.com/whowhatwear,Who What Wear,Fashion,Disabled,1.92,,article,,www.whowhatwear.com,Top Sources; Fashion,301
+https://www.elle.com/,https://www.elle.com/rss/fashion.xml/,Elle,Fashion,Disabled,1.8,,article,,www.elle.com,Top Sources; Fashion,200
+https://www.vogue.com/,https://www.vogue.com/feed/rss,Vogue,Fashion,Disabled,1.64,,article,,www.vogue.com,Top Sources; Fashion,200
+https://www.highsnobiety.com/,https://feeds.feedburner.com/highsnobiety/rss,Highsnobiety,Fashion,Disabled,1.49,,article,,www.highsnobiety.com,Top Sources; Fashion,200
+https://www.businessoffashion.com/,https://www.businessoffashion.com/arc/outboundfeeds/rss/?outputType=xml,The Business of Fashion,Fashion,Disabled,0.87,,article,,www.businessoffashion.com,Top Sources; Fashion,200
+https://intothegloss.com/,https://feeds.feedburner.com/intothegloss/oqoU,Into The Gloss,Fashion,Disabled,0.02,,article,,intothegloss.com,Top Sources; Fashion,200
+https://wearedore.com/,https://www.wearedore.com/feed/,DORÉ,Fashion,Disabled,-0.27,,article,,www.wearedore.com,Top Sources; Fashion,307
+https://wwd.com/,https://wwd.com/custom-feed/recent-stories/,WWD,Fashion,Disabled,-0.33,,article,,wwd.com,Top Sources; Fashion,200
+https://www.bubbyandbean.com/,https://feeds.feedburner.com/BubbyAndBean,Bubby and Bean,Fashion,Disabled,-0.56,,article,,www.bubbyandbean.com,Top Sources; Fashion,200
+https://honestlywtf.com/,https://feeds.feedburner.com/honestlywtf,Honestly WTF,Fashion,Disabled,-0.62,,article,,honestlywtf.com,Top Sources; Fashion,200
+https://www.fashionbeans.com/,https://www.fashionbeans.com/feed/,FashionBeans,Fashion,Disabled,-0.67,,article,,www.fashionbeans.com,Top Sources; Fashion,200
+https://www.putthison.com/,https://putthison.com/feed/,Put This On,Fashion,Disabled,-0.84,,article,,putthison.com,Top Sources; Fashion,200
+https://www.thekitchn.com/,https://feeds.feedburner.com/apartmenttherapy/thekitchn,Kitchn,Food,Enabled,11.09,,article,,www.thekitchn.com,Top Sources; Food,200
+https://www.bonappetit.com/,https://www.bonappetit.com/feed/rss,Bon Appétit,Food,Enabled,6.8,,article,,www.bonappetit.com,Top Sources; Food,200
+https://www.skillet.lifehacker.com,https://lifehacker.com/rss,Lifehacker - Skillet,Food,Enabled,6.16,,article,,lifehacker.com,Top Sources; Food,301
+https://www.eater.com/,https://feeds.feedburner.com/EaterNational,Eater,Food,Enabled,5.7,,article,,www.eater.com;nymag.com;austin.eater.com,Top Sources; Food,200
+https://www.simplyrecipes.com/,https://www.simplyrecipes.com/feeds/google-news,Simply Recipes,Food,Disabled,5.37,,article,,www.simplyrecipes.com,Top Sources; Food,200
+https://food52.com/,https://feeds.feedburner.com/food52-TheAandMBlog,Food52,Food,Disabled,4.3,,article,,food52.com,Top Sources; Food,200
+https://pinchofyum.com/,https://feeds.feedburner.com/pinch-of-yum,Pinch of Yum,Food,Disabled,0.48,On,article,,pinchofyum.com,Top Sources; Food,200
+https://dilbert.com/,https://feeds.feedburner.com/DilbertDailyStrip,Dilbert Daily Strip,Fun,Enabled,2.81,,article,,dilbert.com,Top Sources; Fun,200
+https://www.theonion.com/,https://www.theonion.com/rss,The Onion,Fun,Enabled,2.58,,article,,www.theonion.com,Top Sources; Fun,200
+https://www.failblog.cheezburger.com,https://feeds.feedburner.com/failblog,FAIL Blog,Fun,Enabled,2.45,,article,,cheezburger.com,Top Sources; Fun,200
+https://www.theoatmeal.com/,https://theoatmeal.com/feed/rss,The Oatmeal,Fun,Disabled,2.39,,article,,theoatmeal.com,Top Sources; Fun,200
+https://www.smbc-comics.com/,https://www.smbc-comics.com/comic/rss,Saturday Morning Breakfast Cereal,Fun,Disabled,1.62,,article,,www.smbc-comics.com,Top Sources; Fun,200
+https://www.cracked.com/,https://feeds.feedburner.com/CrackedRSS,Cracked,Fun,Disabled,1.55,,article,,www.cracked.com,Top Sources; Fun,200
+https://www.icanhas.cheezburger.com,https://feeds.feedburner.com/ICanHasCheezburger,I Can Has Cheezburger?,Fun,Disabled,1.25,,article,,cheezburger.com,Top Sources; Fun,200
+https://www.healthline.com/,https://www.healthline.com/rss/health-news,Healthline,Health,Enabled,12.0,,article,,www.healthline.com,Top Sources; Health,200
+https://www.webmd.com/,https://rssfeeds.webmd.com/rss/rss.aspx?RSSSource=RSS_PUBLIC,WebMD Health,Health,Enabled,9.47,,article,,www.webmd.com,Top Sources; Health,200
+https://www.mayoclinic.org/,https://www.mayoclinic.org/rss/all-health-information-topics,Mayo Clinic,Health,Disabled,3.78,,article,,www.mayoclinic.org,Top Sources; Health,200
+https://www.menshealth.com/,https://www.menshealth.com/rss/all.xml/,Men's Health,Health,Disabled,1.09,,article,,www.menshealth.com,Top Sources; Health; Fitness,200
+https://www.nerdfitness.com/,https://feeds.feedburner.com/NerdFitnessBlog,Nerd Fitness,Health,Disabled,0.99,,article,,www.nerdfitness.com,Top Sources; Health; Fitness,200
+https://www.mindbodygreen.com/,https://www.mindbodygreen.com/rss/feed.xml,mindbodygreen,Health,Disabled,0.87,,article,,www.mindbodygreen.com,Top Sources; Health,301
+https://www.nejm.org/,https://www.nejm.org/action/showFeed?jc=nejm&type=etoc&feed=rss,New England Journal of Medicine,Health,Disabled,0.48,,article,,www.nejm.org,Top Sources; Health,200
+https://www.self.com/,https://www.self.com/feed/rss,SELF,Health,Disabled,0.32,,article,,www.self.com,Top Sources; Health; Fitness,200
+https://greatist.com/,https://greatist.com/feed,Greatist,Health,Disabled,0.23,,article,,greatist.com,Top Sources; Health,200
+https://www.wellandgood.com/,https://www.wellandgood.com/feed/,Well+Good,Health,Disabled,0.2,,article,,www.wellandgood.com,Top Sources; Health,200
+https://www.medicinenet.com,https://www.medicinenet.com/rss/dailyhealth.xml,MedicineNet,Health,Disabled,0.09,,article,,www.medicinenet.com,Top Sources; Health,200
+https://www.shape.com/,https://www.shape.com/rss.xml,Shape Magazine,Health,Disabled,-0.07,,article,,www.shape.com,Top Sources; Health; Fitness,404
+https://wellnessmama.com/,https://wellnessmama.com/feed/,Wellness Mama,Health,Disabled,-0.29,,article,,wellnessmama.com,Top Sources; Health,200
+https://www.houzz.com/,https://www.houzz.com/getGalleries/featured/out-rss,Houzz,Home,Enabled,16.18,,article,,www.houzz.com,Top Sources; Home; Design,200
+https://www.apartmenttherapy.com/,https://www.apartmenttherapy.com/main.rss,Apartment Therapy,Home,Enabled,11.57,,article,,www.apartmenttherapy.com,Top Sources; Home,200
+https://design-milk.com/,https://feeds.feedburner.com/design-milk,Design Milk,Home,Enabled,7.52,,article,,design-milk.com,Top Sources; Home; Design,200
+https://www.bobvila.com/,https://www.bobvila.com/rss.xml,Bob Vila,Home,Disabled,0.61,,article,,www.bobvila.com,Top Sources; Home; DIY,404
+https://www.contemporist.com/,https://feeds.feedburner.com/contemporist,Contemporist,Home,Disabled,0.63,,article,,www.contemporist.com,Top Sources; Home,200
+https://www.trendir.com/,https://feeds.feedburner.com/trendir/,Trendir,Home,Disabled,0.56,,article,,www.trendir.com,Top Sources; Home,302
+https://www.sfgirlbybay.com/,https://www.sfgirlbybay.com/feed/,sfgirlbybay,Home,Disabled,0.39,,article,,www.sfgirlbybay.com,Top Sources; Home,301
+https://poppytalk.com/,https://feeds.feedburner.com/blogspot/ISuVv,Poppytalk,Home,Disabled,0.11,,article,,poppytalk.blogspot.com,Top Sources; Home,200
+https://juniperhome.com/,https://juniperhome.com/blog/feed/,Juniper Home,Home,Disabled,0.06,,article,,juniperhome.com,Top Sources; Home,200
+https://www.homedit.com/,https://feeds.feedburner.com/Homedit,Homedit,Home,Disabled,-0.19,,article,,www.homedit.com,Top Sources; Home; Design,200
+https://makingitlovely.com/,https://feeds2.feedburner.com/makingitlovely,Making it Lovely,Home,Disabled,-0.18,,article,,makingitlovely.com,Top Sources; Home; Design,200
+https://www.remodelista.com/,https://www.remodelista.com/feed/,Remodelista,Home,Disabled,-0.2,,article,,www.remodelista.com,Top Sources; Home; Design,200
+https://www.domino.com/,https://www.domino.com/feed/,domino,Home,Disabled,-0.33,,article,,www.domino.com,Top Sources; Home,200
+https://thedesignfiles.net/,https://thedesignfiles.net/feed/,The Design Files,Home,Disabled,-0.38,,article,,thedesignfiles.net,Top Sources; Home; Design,301
+https://medium.com/starts-with-a-bang?source=rss----458a773bccd2---4,https://medium.com/feed/starts-with-a-bang,Starts With A Bang!,Science,Enabled,7.69,,article,,medium.com,Top Sources; Science,200
+https://www.livescience.com/,https://feeds.feedburner.com/Livesciencecom,Livescience.com,Science,Enabled,6.11,,article,,www.livescience.com,Top Sources; Science,200
+https://www.popsci.com/,https://www.popsci.com/feed/,Popular Science,Science,Enabled,4.9,,article,,www.popsci.com,Top Sources; Science,304
+https://www.nature.com/,https://feeds.nature.com/nature/rss/current,Nature,Science,Enabled,4.06,,article,,www.nature.com,Top Sources; Science,301
+https://www.space.com/,https://www.space.com/feeds/all,Space.com,Science,Disabled,3.91,,article,,www.space.com,Top Sources; Science,200
+https://www.science.org/,https://www.science.org/rss/news_current.xml,ScienceMag,Science,Disabled,3.68,,article,,www.science.org,Top Sources; Science,200
+https://www.sciencealert.com/,https://feeds.feedburner.com/sciencealert-latestnews,ScienceAlert,Science,Disabled,2.85,,article,,www.sciencealert.com,Top Sources; Science,302
+https://www.nasa.gov/,https://www.nasa.gov/rss/dyn/lg_image_of_the_day.rss,NASA Image of the Day,Science,Disabled,1.73,,article,,www.nasa.gov,Top Sources; Science; Photos,301
+https://www.newscientist.com/,https://feeds.newscientist.com/science-news/,New Scientist,Science,Disabled,1.71,,article,,www.newscientist.com,Top Sources; Science,200
+https://arstechnica.com:443/,https://feeds.arstechnica.com/arstechnica/science,Ars Technica,Science,Disabled,1.61,,article,,arstechnica.com,Top Sources; Science,200
+https://www.smithsonianmag.com/,https://feeds.feedburner.com/smithsonianmag/science-nature,Smithsonian Magazine,Science,Disabled,1.25,,article,,www.smithsonianmag.com,Top Sources; Science,200
+https://informationisbeautiful.net/,https://feeds.feedburner.com/InformationIsBeautiful,Information is Beautiful,Science,Disabled,1.13,,article,,informationisbeautiful.net,Top Sources; Science,200
+https://www.sciencedaily.com/,https://www.sciencedaily.com/newsfeed.xml,ScienceDaily,Science,Disabled,1.1,,article,,www.sciencedaily.com,Top Sources; Science,200
+https://futurism.com/,https://futurism.com/feed,Futurism,Science,Disabled,0.87,,article,,futurism.com,Top Sources; Science,200
+https://flowingdata.com/,https://flowingdata.com/feed,FlowingData,Science,Disabled,0.85,,article,,flowingdata.com,Top Sources; Science,200
+https://www.futurity.org/,https://www.futurity.org/feed/,Futurity,Science,Disabled,0.54,,article,,www.futurity.org,Top Sources; Science,200
+https://www.syfy.com/,https://www.syfy.com/syfy-wire/topic/bad-astronomy/feed,Bad Astronomy,Science,Disabled,0.36,,article,,www.syfy.com,Top Sources; Science,200
+https://phys.org/,https://phys.org/rss-feed/,Phys.org,Science,Disabled,0.23,On,article,,phys.org,Top Sources; Science,200
+https://bigthink.com/,https://feeds.feedburner.com/bigthink/main,Big Think,Science,Disabled,0.2,,article,,bigthink.com,Top Sources; Science,200
+https://www.nasa.gov/news/,https://www.nasa.gov/rss/dyn/breaking_news.rss,NASA Breaking News,Science,Disabled,0.33,,article,,www.nasa.gov,Top Sources; Science,301
+https://mindhacks.com/,https://mindhacks.com/feed/atom/,Mind Hacks,Science,Disabled,-0.06,,article,,mindhacks.com,Top Sources; Science,200
+https://fivethirtyeight.com/,https://fivethirtyeight.com/science/feed/,FiveThirtyEight - Science,Science,Disabled,-0.16,,article,,fivethirtyeight.com,Top Sources; Science,200
+https://www.spectrum.ieee.org,https://feeds2.feedburner.com/IeeeSpectrum,IEEE Spectrum,Science,Disabled,-0.18,,article,,spectrum.ieee.org,Top Sources; Science,200
+https://www.espn.com/,https://www.espn.com/espn/rss/news,ESPN,Sports,Enabled,17.32,,article,,www.espn.com,Top Sources; Sports,200
+https://www.bleacherreport.com/,https://bleacherreport.com/articles/feed,Bleacher Report,Sports,Enabled,3.51,,article,,bleacherreport.com,Top Sources; Sports,200
+https://sports.yahoo.com/,https://news.yahoo.com/rss/sports,Yahoo! Sports,Sports,Enabled,2.15,,article,,news.yahoo.com,Top Sources; Sports,200
+https://www.cbssports.com/,https://www.cbssports.com/rss/headlines/,CBSSports,Sports,Enabled,2.03,,article,,www.cbssports.com,Top Sources; Sports,200
+https://deadspin.com/,https://feeds.feedburner.com/deadspin/,Deadspin,Sports,Disabled,1.49,,article,,deadspin.com,Top Sources; Sports,200
+https://www.skysports.com/,https://www.skysports.com/rss/11095,SkySports,Sports,Disabled,0.97,,article,,www.skysports.com,Top Sources; Sports,200
+https://www.espncricinfo.com/,https://www.espncricinfo.com/rss/content/story/feeds/0.xml,ESPN - Cricket,Sports,Disabled,0.93,,article,,www.espncricinfo.com,Top Sources; Sports; Cricket,200
+https://www.telegraph.co.uk/sport/,https://www.telegraph.co.uk/sport/rss.xml,The Telegraph - Sports,Sports,Disabled,0.05,,article,,www.telegraph.co.uk,Top Sources; Sports,200
+https://fivethirtyeight.com/,https://fivethirtyeight.com/sports/feed/,FiveThirtyEight - Sports,Sports,Disabled,-0.24,,article,,projects.fivethirtyeight.com;fivethirtyeight.com,Top Sources; Sports,200
+https://www.espn.com/soccer/,https://www.espn.com/espn/rss/soccer/news,ESPN - Football,Sports,Disabled,-0.42,,article,,www.espn.com,Top Sources; Sports; Football,200
+https://www.foxsports.com/,https://api.foxsports.com/v1/rss,FOX Sports,Sports,Disabled,-0.69,,article,,www.foxsports.com,Top Sources; Sports,200
+https://www.mlbtraderumors.com/,https://www.mlbtraderumors.com/feed/atom,MLB Trade Rumors,Sports,Disabled,-0.85,,article,,www.mlbtraderumors.com,Top Sources; Sports; Baseball,200
+https://www.blogs.fangraphs.com,https://blogs.fangraphs.com/feed/,FanGraphs Baseball,Sports,Disabled,-0.89,,article,,blogs.fangraphs.com,Top Sources; Sports; Baseball,200
+https://uproxx.com/,https://feeds.feedburner.com/uproxx/withleather,Uproxx - Sports,Sports,Disabled,-1.05,,article,,uproxx.com,Top Sources; Sports,404
+https://www.theringer.com/,https://www.theringer.com/rss/index.xml,The Ringer,Sports,Disabled,-1.07,,article,,www.theringer.com,Top Sources; Sports,200
+https://www.feeds.feedburner.com/arseblog.com,https://feeds.feedburner.com/arseblog,Arseblog,Sports,Disabled,-1.13,,article,,shows.acast.com,Top Sources; Sports,200
+https://theathletic.com/,https://theathletic.com/rss-feed/,The Athletic,Sports,Disabled,-1.22,,article,,theathletic.com,Top Sources; Sports,301
+https://www.basketball.realgm.com/news,https://basketball.realgm.com/rss/realgm_nba_wiretap.xml,RealGM Basketball Wiretap,Sports,Disabled,-1.27,,article,,basketball.realgm.com,Top Sources; Sports; Basketball,200
+https://theathletic.com/nba,https://theathletic.com/nba/?rss=1,The Athletic - NBA,Sports,Disabled,-1.27,,article,,theathletic.com,Top Sources; Sports; Basketball,301
+https://www.cnet.com/,https://www.cnet.com/rss/news/,CNET News,Technology,Enabled,10.1,On,article,,www.cnet.com,Top Sources; Technology,200
+https://www.theverge.com/,https://www.theverge.com/rss/full.xml,The Verge,Technology,Enabled,5.96,,article,,www.theverge.com,Top Sources; Technology,200
+https://www.engadget.com/,https://www.engadget.com/rss-full.xml,Engadget,Technology,Enabled,5.34,,article,,www.engadget.com,Top Sources; Technology,200
+https://www.wired.com/,https://www.wired.com/feed,Wired,Technology,Enabled,3.55,,article,,www.wired.com,Top Sources; Technology; Culture,200
+https://lifehacker.com/,https://lifehacker.com/rss,Lifehacker,Technology,Enabled,3.19,,article,,lifehacker.com,Top Sources; Technology; Culture,301
+https://techcrunch.com/,https://techcrunch.com/feed/,TechCrunch,Technology,Enabled,3.15,,article,,techcrunch.com,Top Sources; Technology,200
+https://gizmodo.com/,https://gizmodo.com/rss,Gizmodo,Technology,Enabled,2.65,,article,,gizmodo.com,Top Sources; Technology,200
+https://www.zdnet.com/,https://www.zdnet.com/news/rss.xml,ZDNet,Technology,Disabled,2.3,,article,,www.zdnet.com,Top Sources; Technology,200
+https://www.techradar.com/,https://www.techradar.com/rss,TechRadar,Technology,Disabled,1.7,,article,,www.techradar.com,Top Sources; Technology,200
+https://www.digitaltrends.com/,https://www.digitaltrends.com/feed/,Digital Trends,Technology,Disabled,1.31,,article,,www.digitaltrends.com,Top Sources; Technology,200
+https://www.gsmarena.com/,https://www.gsmarena.com/rss-news-reviews.php3,GSMArena,Technology,Disabled,0.77,,article,,www.gsmarena.com,Top Sources; Technology,429
+https://www.androidcentral.com/,https://www.androidcentral.com/feed,Android Central,Technology,Disabled,0.48,,article,,www.androidcentral.com,Top Sources; Technology,301
+https://www.macrumors.com/,https://feeds.macrumors.com/MacRumors-Front,MacRumors,Technology,Disabled,-0.07,,article,,www.macrumors.com,Top Sources; Technology,200
+https://venturebeat.com/,https://venturebeat.com/feed/,VentureBeat,Technology,Disabled,-0.49,,article,,venturebeat.com,Top Sources; Technology; Business,200
+https://thenextweb.com/,https://feeds2.feedburner.com/thenextweb,The Next Web,Technology,Disabled,-0.54,,article,,thenextweb.com,Top Sources; Technology,200
+https://www.windowscentral.com/,https://feeds.feedburner.com/wmexperts,Windows Central,Technology,Disabled,-0.59,,article,,www.windowscentral.com,Top Sources; Technology,200
+https://www.makeuseof.com/,https://feeds.feedburner.com/Makeuseof,MakeUseOf,Technology,Disabled,-0.76,,article,,www.makeuseof.com,Top Sources; Technology,200
+https://hackaday.com/,https://hackaday.com/blog/feed/,Hackaday,Technology,Disabled,-0.81,,article,,hackaday.com,Top Sources; Technology,200
+https://9to5mac.com,https://9to5mac.com/feed/,9to5Mac,Technology,Disabled,-0.83,,article,,9to5mac.com,Top Sources; Technology,200
+https://www.spectrum.ieee.org,https://feeds2.feedburner.com/IeeeSpectrum,IEEE Spectrum,Science,Disabled,-0.18,,article,,spectrum.ieee.org,Top Sources; Science,200
+https://thepointsguy.com/,https://feeds.feedburner.com/thepointsguy,The Points Guy,Travel,Enabled,9.94,,article,,thepointsguy.com,Top Sources; Travel,200
+https://www.lonelyplanet.com/,https://www.lonelyplanet.com/articles/news/feed/atom,Lonely Planet,Travel,Enabled,8.91,,article,,www.lonelyplanet.com,Top Sources; Travel,200
+https://www.atlasobscura.com/,https://www.atlasobscura.com/feeds/latest,Atlas Obscura,Travel,Enabled,6.64,,article,,www.atlasobscura.com,Top Sources; Travel,200
+https://stuckincustoms.com/,https://feeds.feedburner.com/stuckincustoms/EmRA,Stuck in Customs,Travel,Disabled,2.7,,article,,stuckincustoms.com,Top Sources; Travel,200
+https://onemileatatime.com/,https://onemileatatime.com/feed/,One Mile at a Time,Travel,Disabled,2.51,,article,,onemileatatime.com,Top Sources; Travel,200
+https://skift.com/,https://skift.com/feed/,Skift,Travel,Disabled,2.5,On,article,,skift.com,Top Sources; Travel,200
+https://matadornetwork.com/,https://matadornetwork.com/feed/,Matador Network,Travel,Disabled,2.07,,article,,matadornetwork.com,Top Sources; Travel,200
+https://adventure.com/,https://adventure.com/feed/,Adventure,Travel,Disabled,0.63,,article,,adventure.com,Top Sources; Travel,200
+https://millionmilesecrets.com/,https://feeds.feedburner.com/MillionMileSecrets,Million Mile Secrets,Travel,Disabled,0.31,,article,,millionmilesecrets.com,Top Sources; Travel,200
+https://www.flyertalk.com/,https://www.flyertalk.com/feed,FlyerTalk,Travel,Disabled,0.25,,article,,www.flyertalk.com,Top Sources; Travel,200
+https://boardingarea.com/,https://boardingarea.com/feed/atom/,BoardingArea,Travel,Disabled,0.17,,article,,www.paddleyourownkanoo.com;milesforfamily.com;liveandletsfly.com;travelupdate.com;yourmileagemayvary.net;viewfromthewing.com;youhavebeenupgraded.boardingarea.com;onemileatatime.com;milestomemories.com,Top Sources; Travel,200
+https://www.frommers.com/,https://www.frommers.com/feed,Frommer's,Travel,Disabled,-1.31,,article,,www.frommers.com,Top Sources; Travel,200
+https://www.theguardian.com/us/travel,https://www.theguardian.com/us/travel/rss,The Guardian - Travel,Travel,Disabled,-1.39,On,article,,www.theguardian.com,Top Sources; Travel,200
+https://www.secretflying.com/,https://www.secretflying.com/feed/,Secret Flying,Travel,Disabled,-1.4,,article,,www.secretflying.com,Top Sources; Travel,403
+https://www.travelweekly.com/,https://feeds.feedburner.com/TravelWeeklysTopStories,Travel Weekly,Travel,Disabled,-1.42,,article,,www.travelweekly.com,Top Sources; Travel,200
+https://www.afar.com/,https://feeds.feedburner.com/AfarMagazine,AFAR Magazine,Travel,Disabled,-1.45,,article,,www.afar.com,Top Sources; Travel,200
+https://www.blog.ricksteves.com,https://blog.ricksteves.com/feed/,Rick Steves' Travel Blog,Travel,Disabled,-1.52,,article,,blog.ricksteves.com,Top Sources; Travel,200
+https://www.theflightdeal.com/,https://feeds.feedburner.com/TheFlightDeal,The Flight Deal,Travel,Disabled,-1.54,,article,,www.theflightdeal.com,Top Sources; Travel,200
