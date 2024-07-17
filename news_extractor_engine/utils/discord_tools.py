@@ -10,9 +10,15 @@ class DiscordLogger():
     self.__webhook_url = url
   
   @only_dev_mode
-  def send_message(self, msg: str):
-    webhook = DiscordWebhook(url=self.__webhook_url, content=msg)
-    response = webhook.execute()
+  def send_message(self, msg: str, **kwargs: dict) -> DiscordWebhook:
+    if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
+      webhook = kwargs['webhook']
+      webhook.content = msg
+      response = webhook.edit() 
+    else:
+      webhook = DiscordWebhook(url=self.__webhook_url, content=msg)
+      response = webhook.execute()
+    return webhook
   
   @only_dev_mode
   def send_embed(
@@ -35,7 +41,8 @@ class DiscordLogger():
       video_url: str | None = None,
       video_height: int | None = None,
       video_width: int | None = None,
-      ):
+      **kwargs
+      ) -> DiscordWebhook:
     embed: DiscordEmbed = DiscordEmbed(
       title=title,
       description=description,
@@ -57,21 +64,36 @@ class DiscordLogger():
       embed.set_provider(name=provider_name, url=provider_url)
     if video_url is not None and video_height is not None and video_width is not None:
       embed.set_video(url=video_url, height=video_height, width=video_width)
-    webhook = DiscordWebhook(url=self.__webhook_url)
-    webhook.add_embed(embed)
-    response = webhook.execute()
+    if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
+      webhook = kwargs['webhook']
+      webhook.remove_embeds()
+      webhook.add_embed(embed)
+      response = webhook.edit()
+    else:
+      webhook = DiscordWebhook(url=self.__webhook_url)
+      webhook.add_embed(embed)
+      response = webhook.execute()
+    return webhook
   
   @only_dev_mode
-  def send_file(self, file_path: str, content: str = ""):
-    webhook = DiscordWebhook(url=self.__webhook_url, content=content)
-    with open(file_path, "rb") as f:
-      webhook.add_file(file=f.read(), filename=os.path.basename(file_path))
-    response = webhook.execute()
+  def send_file(self, file_path: str, content: str = "", **kwargs) -> DiscordWebhook:
+    if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
+      webhook = kwargs['webhook']
+      webhook.remove_files()
+      with open(file_path, "rb") as f:
+        webhook.add_file(file=f.read(), filename=os.path.basename(file_path))
+      response = webhook.edit()
+    else:
+      webhook = DiscordWebhook(url=self.__webhook_url, content=content)
+      with open(file_path, "rb") as f:
+        webhook.add_file(file=f.read(), filename=os.path.basename(file_path))
+      response = webhook.execute()
+    return webhook
 
-  def send_error(self, error: Exception):
-    self.send_embed(
+  def send_error(self, error: Exception, **kwargs) -> DiscordWebhook:
+    return self.send_embed(
       title="Error",
       description=f"An error occurred: {error}",
-      color=0xff0000
+      color=0xff0000,
+      webhook=kwargs['webhook'] if kwargs.get("webhook") else None
     )
-  
