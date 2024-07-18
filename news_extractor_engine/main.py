@@ -13,7 +13,7 @@ from datetime import datetime
 
 from news_extractor_engine.engine.feed import FeedReader, FeedReaderData
 from news_extractor_engine.model import ArticleSource
-from news_extractor_engine.utils.devtools import dev_mode
+from news_extractor_engine.utils.devtools import is_dev_mode
 from news_extractor_engine.utils.discord_tools import DiscordLogger
 
 load_dotenv()
@@ -24,9 +24,18 @@ MONGO_CONFIG_DB_CONN_STRING = os.getenv("MONGODB_CONFIG_DB_CONNECTION_STRING")
 
 builtins.ENVIRONMENT = ENVIRONMENT
 
+logging.basicConfig(
+  level=logging.INFO,
+  format='[%(asctime)s] %(name)s; %(levelname)s :: %(message)s',
+  # filename=f'logs/engine-{datetime.now().}.log',
+  handlers=[
+    logging.FileHandler(f'logs/engine-{datetime.now().strftime("%d-%m-%Y_%H:%M:%S")}.log'),
+    logging.StreamHandler()
+  ]
+)
+
 loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
-
 
 feed_list: list[FeedReader] = []
 worker_list: list[asyncio.Task] = []
@@ -54,21 +63,32 @@ sources_pipeline = [
     ]
 
 async def create_feed_reader_task(feed: FeedReader):
+  refresh_time = feed.refresh_time
   while True:
-    print(f"Checking for new articles from {feed.source.name}")
+    if is_dev_mode():
+      logging.info(f"Checking for new articles from {feed.source.name}")
     try:
       feed_data = await feed.get_feed()
+      if feed_data.feed.feed.get('ttl') is not None:
+        refresh_time = float(feed_data.feed.feed.ttl) * 60
+        if feed_data.feed_last_updated_on is not None:
+          refresh_time -= (datetime.now().timestamp() - feed_data.feed_last_updated_on.timestamp()) % refresh_time
+        refresh_time += 5 # Adding extra few seconds as buffer
       if feed_data.has_updated_since_last_request:
-        discord.send_embed(
-          title=f"## **{feed.source.name}**",
-          description=f"**{feed_data.feed['entries'][0]['title']}**\n{markdownify.markdownify(feed_data.feed['entries'][0]['summary'])}",
-          url=str(feed_data.feed['entries'][0]['link']),
-          color=0xddcfee
-        )
+        if is_dev_mode():
+          logging.info(f"New article found from {feed.source.name}")
+          discord.send_embed(
+            title=f"## **{feed.source.name}**",
+            description=f"**{feed_data.feed['entries'][0]['title']}**\n{markdownify.markdownify(feed_data.feed['entries'][0]['summary'])}",
+            url=str(feed_data.feed['entries'][0]['link']),
+            color=0xddcfee
+          )
     except Exception as e:
       logging.error(e)
       return
-    await asyncio.sleep(10)
+    if is_dev_mode():
+      logging.info(f"{feed.source.name} next check in {refresh_time} seconds")
+    await asyncio.sleep(refresh_time)
 
 def is_source_valid(data: FeedReaderData):
   if data.feed['bozo'] != False:
@@ -78,11 +98,10 @@ def is_source_valid(data: FeedReaderData):
 
 async def main():
   current_directory = os.path.dirname(__file__)
-  # news_sources = pl.read_csv(f"{current_directory}/config/news_sources.csv")
   news_sources = sources_db.source.aggregate(sources_pipeline)
-  with dev_mode():
+  if is_dev_mode():
     feed_check_list = []
-    print(news_sources)
+    logging.info(news_sources)
   for doc in news_sources:
     source = ArticleSource(
       id=doc['_id'],
@@ -93,7 +112,7 @@ async def main():
     )
     rss_feed = FeedReader(source)
     feed_list.append(rss_feed)
-    with dev_mode():
+    if is_dev_mode():
       try:
         data = await rss_feed.get_feed()
         feed_check_list.append(f"{source.name}: {'✅' if is_source_valid(data) else '❌'}")
@@ -104,7 +123,8 @@ async def main():
   for feed in feed_list:
     task = asyncio.create_task(create_feed_reader_task(feed), name=feed.source.name)
     worker_list.append(task)
-  discord.send_embed(title="Articles status:", description="\n".join(feed_check_list))
+  if is_dev_mode():
+    discord.send_embed(title="Articles status:", description="\n".join(feed_check_list))
   await asyncio.wait(worker_list)
 
 async def destruct():
@@ -116,12 +136,17 @@ if __name__ == "__main__":
   try:
     loop.run_until_complete(main())
   except KeyboardInterrupt as e:
-    webhook = discord.send_embed(title="Terminating...", description=f"Shutting down the news extractor engine...")
+    logging.info("Shutting down the news extractor engine...")
+    if is_dev_mode():
+      webhook = discord.send_embed(title="Terminating...", description=f"Shutting down the news extractor engine...")
     sleep(3)
     logging.error(e)
   except Exception as e:
-    webhook = discord.send_embed(title="Error", description=f"An error occurred while running the news extractor engine:\n```{e}```")
+    if is_dev_mode():
+      webhook = discord.send_embed(title="Error", description=f"An error occurred while running the news extractor engine:\n```{e}```")
     logging.error(e)
   finally:
     asyncio.run(destruct())
-    discord.send_embed(title="Terminated", description=f"The news extractor engine was shutdown <t:{int(datetime.now().timestamp())}:R>.", webhook=webhook)
+    logging.info("News extractor engine was shutdown.")
+    if is_dev_mode():
+      discord.send_embed(title="Terminated", description=f"The news extractor engine was shutdown <t:{int(datetime.now().timestamp())}:R>.", webhook=webhook)

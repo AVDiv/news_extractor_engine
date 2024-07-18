@@ -30,11 +30,21 @@ class FeedReader:
   __feed_last_updated_on: datetime | None = None
   __feed_last_refresh_on: datetime | None = None
   __feed: feedparser.FeedParserDict
-  __feed_refresh_time: float = 15.0
+  refresh_time: float = 15.0
   __has_updated_since_last_request: bool = False
   __last_feed_item_hash: int = 0
 
-  def __init__(self, source: ArticleSource) -> None:
+  def __init__(self, source: ArticleSource, refresh_time: float = 15.0) -> None:
+    """The FeedReader class is used to fetch and parse RSS feeds from a given source.
+
+    Args:
+        source (ArticleSource): The source object from which the feed will be fetched.
+        refresh_time (float, optional): The refresh time of the feed. Defaults to 15 seconds.
+
+    Raises:
+        TypeError: _description_
+    """
+    self.refresh_time = refresh_time
     if isinstance(source, ArticleSource):
       self.source = source
     else:
@@ -79,7 +89,7 @@ class FeedReader:
         return feed
   
   async def get_feed(self) -> FeedReaderData:
-    boundry_of_no_refresh = datetime.now() - timedelta(seconds=self.__feed_refresh_time)
+    boundry_of_no_refresh = datetime.now() - timedelta(seconds=self.refresh_time)
     if self.__feed_last_refresh_on is None or self.__feed_last_refresh_on < boundry_of_no_refresh:
       await self.fetch_feed()
     data = FeedReaderData(
