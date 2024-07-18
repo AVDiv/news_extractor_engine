@@ -9,7 +9,6 @@ class DiscordLogger():
   def __init__(self, url) -> None:
     self.__webhook_url = url
   
-  @only_dev_mode
   def send_message(self, msg: str, **kwargs: dict) -> DiscordWebhook:
     if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
       webhook = kwargs['webhook']
@@ -20,7 +19,6 @@ class DiscordLogger():
       response = webhook.execute()
     return webhook
   
-  @only_dev_mode
   def send_embed(
       self,
       *,
@@ -75,7 +73,6 @@ class DiscordLogger():
       response = webhook.execute()
     return webhook
   
-  @only_dev_mode
   def send_file(self, file_path: str, content: str = "", **kwargs) -> DiscordWebhook:
     if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
       webhook = kwargs['webhook']
