@@ -12,7 +12,7 @@ poetry.lock
 .nvim/
 
 # Environment
-.env
+*.env
 
 # Logs
 *.log
