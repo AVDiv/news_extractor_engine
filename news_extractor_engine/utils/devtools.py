@@ -2,13 +2,12 @@ import os
 from functools import wraps
 from contextlib import contextmanager
 
-@contextmanager
-def dev_mode():
+def is_dev_mode():
     if ENVIRONMENT == "development":
-        yield
+        return True
     else:
         # print("This block is only run in development mode.")
-        yield None
+        return False
 
 def only_dev_mode(func):
     @wraps(func)
