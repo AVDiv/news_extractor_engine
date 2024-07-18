@@ -1,0 +1,17 @@
+version: "1.0"
+services:
+  db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME_FILE: /run/secrets/mongo-local-username
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo-local-password
+    secrets:
+      - mongo-local-username
+      - mongo-local-password
+  news_extractor_engine:
+    container_name: news_extractor_engine
+    build: .
+    env_file:
+      - .env
+    depends_on:
+      - db
