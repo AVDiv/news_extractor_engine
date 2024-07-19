@@ -6,21 +6,25 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 from news_extractor_engine.utils.devtools import only_dev_mode
 
 class DiscordLogger():
-  def __init__(self, url) -> None:
-    self.__webhook_url = url
+  __webhook_url: str
   
-  def send_message(self, msg: str, **kwargs: dict) -> DiscordWebhook:
+  @staticmethod
+  def set_webhook_url(url) -> None:
+    DiscordLogger.__webhook_url = url
+  
+  @staticmethod
+  def send_message(msg: str, **kwargs: dict) -> DiscordWebhook:
     if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
       webhook = kwargs['webhook']
       webhook.content = msg
       response = webhook.edit() 
     else:
-      webhook = DiscordWebhook(url=self.__webhook_url, content=msg)
+      webhook = DiscordWebhook(url=DiscordLogger.__webhook_url, content=msg)
       response = webhook.execute()
     return webhook
   
+  @staticmethod
   def send_embed(
-      self,
       *,
       title: str,
       description: str,
@@ -68,12 +72,13 @@ class DiscordLogger():
       webhook.add_embed(embed)
       response = webhook.edit()
     else:
-      webhook = DiscordWebhook(url=self.__webhook_url)
+      webhook = DiscordWebhook(url=DiscordLogger.__webhook_url)
       webhook.add_embed(embed)
       response = webhook.execute()
     return webhook
   
-  def send_file(self, file_path: str, content: str = "", **kwargs) -> DiscordWebhook:
+  @staticmethod
+  def send_file(file_path: str, content: str = "", **kwargs) -> DiscordWebhook:
     if (kwargs.get("webhook") and isinstance(kwargs['webhook'], DiscordWebhook)):
       webhook = kwargs['webhook']
       webhook.remove_files()
@@ -81,14 +86,15 @@ class DiscordLogger():
         webhook.add_file(file=f.read(), filename=os.path.basename(file_path))
       response = webhook.edit()
     else:
-      webhook = DiscordWebhook(url=self.__webhook_url, content=content)
+      webhook = DiscordWebhook(url=DiscordLogger.__webhook_url, content=content)
       with open(file_path, "rb") as f:
         webhook.add_file(file=f.read(), filename=os.path.basename(file_path))
       response = webhook.execute()
     return webhook
 
-  def send_error(self, error: Exception, **kwargs) -> DiscordWebhook:
-    return self.send_embed(
+  @staticmethod
+  def send_error(error: Exception, **kwargs) -> DiscordWebhook:
+    return DiscordLogger.send_embed(
       title="Error",
       description=f"An error occurred: {error}",
       color=0xff0000,
