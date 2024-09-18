@@ -12,7 +12,7 @@ class Article:
 
     Attributes:
       title (str): The title of the article.
-      author (str): The author of the article.
+      author (list): The list of authors of the article.
       publication_date (datetime): The publication date of the article.
       source (ArticleSource): The source of the article.
       url (str): The URL of the article.
@@ -24,7 +24,7 @@ class Article:
     """
 
     title: str
-    author: str
+    author: list
     publication_date: datetime
     source: ArticleSource
     url: str
