@@ -1,28 +1,34 @@
-import builtins
 import os
+import builtins
 import logging
 import asyncio
+import threading
 from datetime import datetime
 from logging.config import fileConfig
 
 import uvicorn
 from pymongo import MongoClient
 
-from news_extractor_engine.utils.discord_tools import DiscordLogger
 
-from .api import api_app
+from news_extractor_engine.api import api_app
 from news_extractor_engine.engine.engine import Engine
 from news_extractor_engine.engine.feed import FeedReader
+from news_extractor_engine.model.feed import ArticleSource
 from news_extractor_engine.model.error.Environment import (
     EnvironmentVariableNotFoundException,
     InvalidEnvironmentVariableFormatException,
 )
-from news_extractor_engine.model.feed import ArticleSource
+from news_extractor_engine.engine.scraper import ArticleInfoXpaths
+from news_extractor_engine.engine.SpiderTaskQue import SpiderTaskQue
+from news_extractor_engine.utils.discord_tools import DiscordLogger
 
 
 class App:
     __engine: Engine
     __api_server: uvicorn.Server
+    __api_thread: threading.Thread
+    __scraper_task_que: SpiderTaskQue
+    __scraper_task_que_event: threading.Event
     __env: dict[str, str | int | None]
 
     def __setup_logging(self):
@@ -58,7 +64,7 @@ class App:
                 )
             self.__env[name] = env_var
         setattr(builtins, "ENVIRONMENT", self.__env["ENVIRONMENT"])
-    
+
     def __setup_discord_logger(self):
         DiscordLogger.set_webhook_url(self.__env["DISCORD_WEBHOOK_URL"])
 
@@ -83,31 +89,66 @@ class App:
                 categories=source_doc["channels"],
             )
             rss_feed = FeedReader(source)
-            await self.__engine.generate_feed_sync_tasks(rss_feed)
+            source_doc: dict
+            if("xpaths" in source_doc.keys()):
+                article_xpaths = ArticleInfoXpaths(
+                    title=source_doc["xpaths"]["title"],
+                    author=source_doc["xpaths"]["author"],
+                    publication_date=source_doc["xpaths"]["publication_date"],
+                    summary=source_doc["xpaths"]["summary"],
+                    content=source_doc["xpaths"]["content"],
+                    tags=source_doc["xpaths"]["tags"],
+                    categories=source_doc["xpaths"]["categories"],
+                )
+            else:
+                article_xpaths = ArticleInfoXpaths(None, None, None, None, None, None, None)
+            await self.__engine.generate_feed_sync_tasks(rss_feed, article_xpaths)
 
     async def __destruct_all_tasks(self):
         for rss_item in self.__engine.engine_store.rss_item_list.values():
             rss_item.worker.cancel()
 
     async def __start_api_server(self):
-        config = uvicorn.Config(
-            app=api_app,
-            host=str(self.__env["API_HOST"]) or "0.0.0.0",
-            port=(
+        async def run_api_server():
+            server_host = str(self.__env["API_HOST"]) or "0.0.0.0"
+            server_port = (
                 int(self.__env["API_PORT"])
                 if self.__env["API_PORT"] is not None
                 else (8080 if ENVIRONMENT == "development" else 80)
-            ),
-            log_level="trace",
-            log_config=fileConfig(
-                f"logs/api-{datetime.now().strftime('%d-%m-%Y_%H:%M:%S')}.log"
-            ),
-        )
-        self.__api_server = uvicorn.Server(config)
-        await self.__api_server.serve()
+            )
+            config = uvicorn.Config(
+                app=api_app,
+                host=server_host,
+                port=server_port,
+                log_level="trace",
+                log_config="./fastapi.log-config.yaml",
+            )
+            self.__api_server = uvicorn.Server(config)
+            await self.__api_server.serve()
+        def run_asyncio_in_thread(loop, coro):
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(coro)
+        loop = asyncio.new_event_loop()
+        coro = run_api_server()
+        self.__api_thread = threading.Thread(target=run_asyncio_in_thread, args=(loop, coro))
+        self.__api_thread.start()
 
     async def __stop_api_server(self):
         await self.__api_server.shutdown()
+        self.__api_thread.join()
+
+    def __start_scraper_task_que(self):
+        logging.info("Starting scraper task que...")
+        self.__scraper_task_que_event = threading.Event()
+        self.__scraper_task_que = SpiderTaskQue(self.__scraper_task_que_event)
+        self.__scraper_task_que.start()
+        logging.info("Started scraper task que!")
+    
+    def __stop_scraper_task_que(self):
+        logging.info("Stopping scraper task que...")
+        self.__scraper_task_que_event.set()
+        self.__scraper_task_que.join()
+        logging.info("Stopped scraper task que!")
 
     async def __console_app_menu(self):
         while True:
@@ -128,6 +169,8 @@ class App:
             self.__setup_discord_logger()  # Setup discord logger
             self.__set_engine_parameters()  # Set engine parameters
             self.__init_engine()  # Create engine instance
+            self.__start_scraper_task_que()
+            await self.__start_api_server()  # Start the API server
             await self.__init_feed_tasks()  # Initiate the feed tasks
 
             worker_list = []
@@ -140,6 +183,7 @@ class App:
 
     async def stop(self):
         try:
+            self.__stop_scraper_task_que()
             await self.__destruct_all_tasks()  # Stop all feed tasks
             await self.__stop_api_server()  # Stop the API server
         except Exception as e:
