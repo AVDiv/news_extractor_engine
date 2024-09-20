@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-
 from datetime import datetime
+from bson.objectid import ObjectId
 
 from news_extractor_engine.model.feed.ArticleSource import ArticleSource
 
@@ -11,6 +11,7 @@ class Article:
     Represents an article extracted from a news source.
 
     Attributes:
+      id (ObjectId): The ID of the article.
       title (str): The title of the article.
       author (list): The list of authors of the article.
       publication_date (datetime): The publication date of the article.
@@ -22,7 +23,7 @@ class Article:
       categories (list[str]): A list of categories the article belongs to.
       images (list[str]): A list of URLs of images associated with the article.
     """
-
+    id: ObjectId
     title: str
     author: list
     publication_date: datetime
@@ -33,3 +34,4 @@ class Article:
     tags: list[str]
     categories: list[str]
     images: list[str]
+

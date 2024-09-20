@@ -20,18 +20,18 @@ class Engine:
         self.__context = zmq.Context()
 
     async def __run_feed_sync_cycle(self, feed: FeedReader, article_xpaths: ArticleInfoXpaths):
-        article_scraper = ArticleSpider(
-            name=feed.source.name,
-            domain=feed.source.domain,
-            xpaths=article_xpaths,
-        )
+        # article_scraper = ArticleSpider(
+        #     name=feed.source.name,
+        #     domain=feed.source.domain,
+        #     xpaths=article_xpaths,
+        # )
         refresh_time = self.engine_store.feed_min_refresh_interval
         refresh_buffer = self.engine_store.feed_refresh_buffer
         spider_sock = self.__context.socket(zmq.PUSH)
         spider_sock.connect("tcp://localhost:5555")
         while True:
             if is_dev_mode():
-                logging.info(f"Checking for new articles from {feed.source.name}")
+                logging.debug(f"Checking for new articles from {feed.source.name}")
             try:
                 feed_data = await feed.get_feed()
                 if feed_data.feed.feed.get("ttl") is not None:
@@ -44,23 +44,23 @@ class Engine:
                     refresh_time += refresh_buffer
                 if feed_data.has_updated_since_last_request:
                     if is_dev_mode():
-                        logging.info(f"New article found from {feed.source.name}")
+                        logging.debug(f"New article found from {feed.source.name}")
                         DiscordLogger.send_embed(
                             title=f"**{feed.source.name}**",
                             description=f"**{feed_data.feed['entries'][0]['title']}**\n{markdownify.markdownify(feed_data.feed['entries'][0]['summary'])}",
                             url=str(feed_data.feed["entries"][0]["link"]),
                             color=0xDDCFEE,
                         )
-                    spider_sock.send_json(
-                        {
-                            "source_id": feed.source.id,
+                    message = {
+                            "source_id": feed.source.id.__str__(),
                             "name": feed.source.name,
                             "url": feed_data.feed["entries"][0]["link"],
                         }
-                    )
+                    # print(message)
+                    spider_sock.send_json(message)
                     
             except Exception as e:
-                logging.error(e)
+                logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
                 return
             logging.info(f"{feed.source.name} next check in {refresh_time} seconds")
             await asyncio.sleep(refresh_time)

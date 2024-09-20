@@ -4,7 +4,6 @@ import logging
 import asyncio
 import threading
 from datetime import datetime
-from logging.config import fileConfig
 
 import uvicorn
 from pymongo import MongoClient
@@ -76,6 +75,7 @@ class App:
         self.__engine = Engine()
 
     async def __init_feed_tasks(self):
+        logging.debug("Initializing RSS feed tasks...")
         source_db = MongoClient(
             str(self.__env["MONGODB_CONFIG_DB_CONNECTION_STRING"])
         ).get_default_database()
@@ -103,6 +103,7 @@ class App:
             else:
                 article_xpaths = ArticleInfoXpaths(None, None, None, None, None, None, None)
             await self.__engine.generate_feed_sync_tasks(rss_feed, article_xpaths)
+            setattr(builtins, "RSS_SOURCE_LIST", self.__engine.engine_store.rss_item_list)
 
     async def __destruct_all_tasks(self):
         for rss_item in self.__engine.engine_store.rss_item_list.values():
@@ -140,7 +141,7 @@ class App:
     def __start_scraper_task_que(self):
         logging.info("Starting scraper task que...")
         self.__scraper_task_que_event = threading.Event()
-        self.__scraper_task_que = SpiderTaskQue(self.__scraper_task_que_event)
+        self.__scraper_task_que = SpiderTaskQue(event=self.__scraper_task_que_event)
         self.__scraper_task_que.start()
         logging.info("Started scraper task que!")
     
@@ -178,7 +179,7 @@ class App:
               worker_list.append(rss_item.worker)
             await asyncio.gather(*worker_list)  # Start all feed tasks
         except Exception as e:
-            logging.error(str(e))
+            logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
             exit(1)
 
     async def stop(self):
@@ -187,5 +188,6 @@ class App:
             await self.__destruct_all_tasks()  # Stop all feed tasks
             await self.__stop_api_server()  # Stop the API server
         except Exception as e:
-            logging.error(str(e))
+            logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
             exit(1)
+

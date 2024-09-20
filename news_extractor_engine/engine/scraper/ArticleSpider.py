@@ -5,6 +5,7 @@ from typing import Optional
 
 import aiohttp
 # import scrapy
+from bson.objectid import ObjectId
 import newspaper as news
 from bs4 import BeautifulSoup
 from lxml import etree
@@ -89,8 +90,9 @@ class ArticleSpider:
         return article
 
     @classmethod
-    def __scrape_data(article: news.Article, source: ArticleSource) -> Article:
+    def __scrape_data(cls, article: news.Article, source: ArticleSource) -> Article:
         article_data = Article(
+            id=ObjectId(),
             title=article.title,
             author=article.authors,
             publication_date=article.publish_date,
@@ -99,5 +101,7 @@ class ArticleSpider:
             summary=article.summary,
             content=article.text,
             tags=article.tags,
+            categories=[],
             images=article.images
         )
+        return article_data

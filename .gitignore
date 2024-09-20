@@ -16,3 +16,6 @@ poetry.lock
 
 # Logs
 *.log
+
+# Datalake
+data
