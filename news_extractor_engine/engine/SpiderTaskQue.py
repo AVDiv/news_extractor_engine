@@ -20,7 +20,7 @@ from news_extractor_engine.engine.scraper import ArticleSpider
 class SpiderTaskQue(threading.Thread):
   __event: threading.Event
   __context: zmq.Context
-  __socket: zmq.SyncSocket
+  __socket: zmq.Socket
   __datalake_table: str
 
   def __init__(self, *, event: threading.Event, datalake_path: str = "data/articles"):
@@ -66,8 +66,8 @@ class SpiderTaskQue(threading.Thread):
         write_deltalake(self.__datalake_table, article_df, mode="append")
     except Exception as e:
         logging.error(f"Data miner Error: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
-        
-  
+
+
   def join(self):
     self.__socket.close()
     self.__context.term()
