@@ -6,10 +6,10 @@ import threading
 from datetime import datetime
 
 import uvicorn
+from news_extractor_engine.api import ApiServerManager
 from pymongo import MongoClient
 
-
-from news_extractor_engine.api import api_app
+from news_extractor_engine.cache.CacheServiceManager import CacheServiceManager
 from news_extractor_engine.engine.engine import Engine
 from news_extractor_engine.engine.feed import FeedReader
 from news_extractor_engine.model.feed import ArticleSource
@@ -20,14 +20,16 @@ from news_extractor_engine.model.error.Environment import (
 from news_extractor_engine.engine.scraper import ArticleInfoXpaths
 from news_extractor_engine.engine.SpiderTaskQue import SpiderTaskQue
 from news_extractor_engine.utils.discord_tools import DiscordLogger
+from news_extractor_engine.api import ApiServerManager
 
 
 class App:
     __engine: Engine
-    __api_server: uvicorn.Server
-    __api_thread: threading.Thread
+    __api_server_manager: ApiServerManager
     __scraper_task_que: SpiderTaskQue
     __scraper_task_que_event: threading.Event
+    __cache_service: CacheServiceManager
+    __cache_service_event: threading.Event
     __env: dict[str, str | int | None]
 
     def __setup_logging(self):
@@ -110,33 +112,19 @@ class App:
             rss_item.worker.cancel()
 
     async def __start_api_server(self):
-        async def run_api_server():
-            server_host = str(self.__env["API_HOST"]) or "0.0.0.0"
-            server_port = (
+        self.__api_server_manager = ApiServerManager(
+            host = str(self.__env["API_HOST"]) or "0.0.0.0",
+            port = (
                 int(self.__env["API_PORT"])
                 if self.__env["API_PORT"] is not None
                 else (8080 if ENVIRONMENT == "development" else 80)
             )
-            config = uvicorn.Config(
-                app=api_app,
-                host=server_host,
-                port=server_port,
-                log_level="trace",
-                log_config="./fastapi.log-config.yaml",
-            )
-            self.__api_server = uvicorn.Server(config)
-            await self.__api_server.serve()
-        def run_asyncio_in_thread(loop, coro):
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(coro)
-        loop = asyncio.new_event_loop()
-        coro = run_api_server()
-        self.__api_thread = threading.Thread(target=run_asyncio_in_thread, args=(loop, coro))
-        self.__api_thread.start()
+        )
+        self.__api_server_manager.start()
+
 
     async def __stop_api_server(self):
-        await self.__api_server.shutdown()
-        self.__api_thread.join()
+        self.__api_server_manager.join()
 
     def __start_scraper_task_que(self):
         logging.info("Starting scraper task que...")
@@ -144,12 +132,25 @@ class App:
         self.__scraper_task_que = SpiderTaskQue(event=self.__scraper_task_que_event)
         self.__scraper_task_que.start()
         logging.info("Started scraper task que!")
-    
+
     def __stop_scraper_task_que(self):
         logging.info("Stopping scraper task que...")
         self.__scraper_task_que_event.set()
         self.__scraper_task_que.join()
         logging.info("Stopped scraper task que!")
+
+    def __start_cache_service_manager(self):
+        logging.info("Starting cache service manager...")
+        self.__cache_service_event = threading.Event()
+        self.__cache_service = CacheServiceManager(event=self.__scraper_task_que_event)
+        self.__cache_service.start()
+        logging.info("Started cache service manager!")
+
+    def __stop_cache_service_manager(self):
+        logging.info("Stopping cache service manager...")
+        self.__cache_service_event.set()
+        self.__cache_service.join()
+        logging.info("Stopped cache service manager!")
 
     async def __console_app_menu(self):
         while True:
@@ -190,4 +191,3 @@ class App:
         except Exception as e:
             logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
             exit(1)
-
