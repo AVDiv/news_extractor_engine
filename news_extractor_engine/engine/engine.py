@@ -20,15 +20,12 @@ class Engine:
         self.__context = zmq.Context()
 
     async def __run_feed_sync_cycle(self, feed: FeedReader, article_xpaths: ArticleInfoXpaths):
-        # article_scraper = ArticleSpider(
-        #     name=feed.source.name,
-        #     domain=feed.source.domain,
-        #     xpaths=article_xpaths,
-        # )
         refresh_time = self.engine_store.feed_min_refresh_interval
         refresh_buffer = self.engine_store.feed_refresh_buffer
         spider_sock = self.__context.socket(zmq.PUSH)
         spider_sock.connect("tcp://localhost:5555")
+        cache_sock = self.__context.socket(zmq.REQ)
+        feed.set_cache_service_socket(cache_sock)
         while True:
             if is_dev_mode():
                 logging.debug(f"Checking for new articles from {feed.source.name}")
@@ -58,7 +55,7 @@ class Engine:
                         }
                     # print(message)
                     spider_sock.send_json(message)
-                    
+
             except Exception as e:
                 logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
                 return
