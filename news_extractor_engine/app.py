@@ -92,7 +92,7 @@ class App:
             )
             rss_feed = FeedReader(source)
             source_doc: dict
-            if("xpaths" in source_doc.keys()):
+            if "xpaths" in source_doc.keys():
                 article_xpaths = ArticleInfoXpaths(
                     title=source_doc["xpaths"]["title"],
                     author=source_doc["xpaths"]["author"],
@@ -103,9 +103,13 @@ class App:
                     categories=source_doc["xpaths"]["categories"],
                 )
             else:
-                article_xpaths = ArticleInfoXpaths(None, None, None, None, None, None, None)
+                article_xpaths = ArticleInfoXpaths(
+                    None, None, None, None, None, None, None
+                )
             await self.__engine.generate_feed_sync_tasks(rss_feed, article_xpaths)
-            setattr(builtins, "RSS_SOURCE_LIST", self.__engine.engine_store.rss_item_list)
+            setattr(
+                builtins, "RSS_SOURCE_LIST", self.__engine.engine_store.rss_item_list
+            )
 
     async def __destruct_all_tasks(self):
         for rss_item in self.__engine.engine_store.rss_item_list.values():
@@ -113,15 +117,14 @@ class App:
 
     async def __start_api_server(self):
         self.__api_server_manager = ApiServerManager(
-            host = str(self.__env["API_HOST"]) or "0.0.0.0",
-            port = (
+            host=str(self.__env["API_HOST"]) or "0.0.0.0",
+            port=(
                 int(self.__env["API_PORT"])
                 if self.__env["API_PORT"] is not None
                 else (8080 if ENVIRONMENT == "development" else 80)
-            )
+            ),
         )
         self.__api_server_manager.start()
-
 
     async def __stop_api_server(self):
         self.__api_server_manager.join()
@@ -142,7 +145,7 @@ class App:
     def __start_cache_service_manager(self):
         logging.info("Starting cache service manager...")
         self.__cache_service_event = threading.Event()
-        self.__cache_service = CacheServiceManager(event=self.__scraper_task_que_event)
+        self.__cache_service = CacheServiceManager(event=self.__cache_service_event)
         self.__cache_service.start()
         logging.info("Started cache service manager!")
 
@@ -166,10 +169,11 @@ class App:
 
     async def start(self):
         try:
-            self.__setup_logging() # Setup logging
+            self.__setup_logging()  # Setup logging
             self.__load_env_vars()  # Load envirnment
             self.__setup_discord_logger()  # Setup discord logger
             self.__set_engine_parameters()  # Set engine parameters
+            self.__start_cache_service_manager()  # Start cache service manager
             self.__init_engine()  # Create engine instance
             self.__start_scraper_task_que()
             await self.__start_api_server()  # Start the API server
@@ -177,17 +181,24 @@ class App:
 
             worker_list = []
             for rss_item in self.__engine.engine_store.rss_item_list.values():
-              worker_list.append(rss_item.worker)
+                worker_list.append(rss_item.worker)
             await asyncio.gather(*worker_list)  # Start all feed tasks
         except Exception as e:
-            logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
+            logging.error(
+                f"Exception occured: ({e.__class__.__name__}) {e.__str__()}",
+                exc_info=True,
+            )
             exit(1)
 
     async def stop(self):
         try:
             self.__stop_scraper_task_que()
+            self.__stop_cache_service_manager()  # Stop cache service manager
             await self.__destruct_all_tasks()  # Stop all feed tasks
             await self.__stop_api_server()  # Stop the API server
         except Exception as e:
-            logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
+            logging.error(
+                f"Exception occured: ({e.__class__.__name__}) {e.__str__()}",
+                exc_info=True,
+            )
             exit(1)

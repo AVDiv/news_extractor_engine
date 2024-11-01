@@ -19,7 +19,9 @@ class Engine:
     def __init__(self) -> None:
         self.__context = zmq.Context()
 
-    async def __run_feed_sync_cycle(self, feed: FeedReader, article_xpaths: ArticleInfoXpaths):
+    async def __run_feed_sync_cycle(
+        self, feed: FeedReader, article_xpaths: ArticleInfoXpaths
+    ):
         refresh_time = self.engine_store.feed_min_refresh_interval
         refresh_buffer = self.engine_store.feed_refresh_buffer
         spider_sock = self.__context.socket(zmq.PUSH)
@@ -30,7 +32,7 @@ class Engine:
             if is_dev_mode():
                 logging.debug(f"Checking for new articles from {feed.source.name}")
             try:
-                feed_data = await feed.get_feed()
+                feed_data = await feed.get_feed()  # Should be debugged
                 if feed_data.feed.feed.get("ttl") is not None:
                     refresh_time = float(feed_data.feed.feed.ttl) * 60
                     if feed_data.feed_last_updated_on is not None:
@@ -49,23 +51,27 @@ class Engine:
                             color=0xDDCFEE,
                         )
                     message = {
-                            "source_id": feed.source.id.__str__(),
-                            "name": feed.source.name,
-                            "url": feed_data.feed["entries"][0]["link"],
-                        }
+                        "source_id": feed.source.id.__str__(),
+                        "name": feed.source.name,
+                        "url": feed_data.feed["entries"][0]["link"],
+                    }
                     # print(message)
                     spider_sock.send_json(message)
 
             except Exception as e:
-                logging.error(f"Exception occured: ({e.__class__.__name__}) {e.__str__()}", exc_info=True)
+                logging.error(
+                    f"Exception occured: ({e.__class__.__name__}) {e.__str__()}",
+                    exc_info=True,
+                )
                 return
             logging.info(f"{feed.source.name} next check in {refresh_time} seconds")
             await asyncio.sleep(refresh_time)
 
-    async def generate_feed_sync_tasks(self, feed: FeedReader, article_xpaths: ArticleInfoXpaths):
+    async def generate_feed_sync_tasks(
+        self, feed: FeedReader, article_xpaths: ArticleInfoXpaths
+    ):
         task = asyncio.create_task(
-            self.__run_feed_sync_cycle(feed, article_xpaths),
-            name=feed.source.name
+            self.__run_feed_sync_cycle(feed, article_xpaths), name=feed.source.name
         )
         rss_item: ChannelItem = ChannelItem(
             id=feed.source.id, name=feed.source.name, feed=feed, worker=task

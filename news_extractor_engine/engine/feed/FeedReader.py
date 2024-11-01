@@ -113,21 +113,32 @@ class FeedReader:
                         f"Invalid feed XML: ({self.source.id}, {self.source.name})"
                     )
                 latest_feed_hash = hash(str(feed["entries"][0]))
-                self.__cache_service_socket.send_json({
+                self.__cache_service_socket.send_json(
+                    {
                         "action": "get",
                         "key": latest_feed_hash,
-                    })
+                    }
+                )
                 cache_query_result = self.__cache_service_socket.recv_json()
-                if self.__last_feed_item_hash != latest_feed_hash and isinstance(cache_query_result, dict) and cache_query_result.get("value") == "NA":
+                if (
+                    self.__last_feed_item_hash != latest_feed_hash
+                    and isinstance(cache_query_result, dict)
+                    and cache_query_result.get("value") == "NA"
+                ):
                     self.__has_updated_since_last_request = True
                     self.__last_feed_item_hash = latest_feed_hash
-                    self.__cache_service_socket.send_json({
-                        "action": "set",
-                        "key": latest_feed_hash,
-                        "value": datetime.now().isoformat(),
-                    })
+                    self.__cache_service_socket.send_json(
+                        {
+                            "action": "set",
+                            "key": latest_feed_hash,
+                            "value": datetime.now().isoformat(),
+                        }
+                    )
                     cache_set_status = self.__cache_service_socket.recv_json()
-                    if isinstance(cache_set_status, dict) and cache_set_status.get("status") != "success":
+                    if (
+                        isinstance(cache_set_status, dict)
+                        and cache_set_status.get("status") != "success"
+                    ):
                         raise ValueError("Cache set failed")
                 self.__feed = feed
                 self.__feed_last_refresh_on = datetime.now()

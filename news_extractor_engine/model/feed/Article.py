@@ -34,4 +34,3 @@ class Article:
     tags: list[str]
     categories: list[str]
     images: list[str]
-
