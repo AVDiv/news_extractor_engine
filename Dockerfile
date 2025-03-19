@@ -1,18 +1,26 @@
-FROM python:3.12
+FROM python:3.12-slim-bookworm
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
-# Install Requisites
-RUN curl -sSL https://install.python-poetry.org | python3 -
+# Install uv
+RUN apt update
+RUN apt install -y git curl
+ENV PATH="/root/.local/bin:$PATH"
 
-# Setup project
+# Copy project files
 COPY pyproject.toml .
+COPY uv.lock .
+COPY README.md .
 COPY fastapi.log-config.yaml .
 COPY news_extractor_engine ./news_extractor_engine
-RUN ~/.local/bin/poetry config virtualenvs.create false
-RUN ~/.local/bin/poetry install
+
+# Install dependencies with uv and create virtual environment
+RUN uv sync --frozen
+RUN uv add . --dev
+
+# Create logs directory
 RUN mkdir -p logs/api
 
-
-# Run project
-CMD [ "python", "news_extractor_engine/main.py" ]
+# Set the command to run the app using the virtual environment’s Python
+CMD [ "uv", "run", "python", "news_extractor_engine/main.py" ]

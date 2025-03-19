@@ -1,9 +1,7 @@
 [project]
 name = "news_extractor_engine"
 version = "1.0.0"
-authors = [
-  { name = "Avin Divakara", email = "67309607+AVDiv@users.noreply.github.com" },
-]
+authors = [{ name = "Avin Divakara", email = "divakaraavin@gmail.com" }]
 description = "A Python package for extracting news from various sources."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -24,7 +22,19 @@ dependencies = [
   "cachetools>=5.5.0",
   "newspaper-io",
   "lxml[html-clean]>=5.3.1",
+  "uvicorn>=0.34.0",
 ]
 
 [tool.uv.sources]
 newspaper-io = { git = "https://github.com/AVDiv/newspaper.io.git" }
+news-extractor-engine = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]          # Or another build backend like "setuptools"
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = ["news-extractor-engine"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["news_extractor_engine"]
