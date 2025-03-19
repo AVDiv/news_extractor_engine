@@ -111,23 +111,25 @@ class SpiderTaskQue(threading.Thread):
                 )
 
                 # Format data for DeltaLake (as lists for DataFrame)
+                delta_article = {}
                 for key, value in article_dict.items():
                     if isinstance(value, list) or isinstance(value, set):
                         if len(value) == 0:
-                            article_dict[key] = "NULL"
+                            delta_article[key] = "NULL"
                         else:
-                            article_dict[key] = " ,".join(article_dict[key])
+                            delta_article[key] = " ,".join(value)
                     elif value is None:
-                        article_dict[key] = "NULL"
+                        delta_article[key] = "NULL"
                     else:
-                        article_dict[key] = [value]
+                        delta_article[key] = [value]
 
-                article_df = pd.DataFrame(article.__dict__)
+                article_df = pd.DataFrame(delta_article)
                 write_deltalake(self.__datalake_table, article_df, mode="append")
                 logging.info(f"Article {article_dict['id']} written to DeltaLake")
             else:
+                topic = self.__kafka_manager._KafkaProducerManager__KAFKA_PRODUCER_TOPIC
                 logging.info(
-                    f"Article {article_dict['id']} published to Kafka topic {self.__kafka_topic}"
+                    f"Article {article_dict['id']} published to Kafka topic {topic}"
                 )
 
         except Exception as e:
