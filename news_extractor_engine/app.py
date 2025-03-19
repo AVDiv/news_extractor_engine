@@ -1,26 +1,25 @@
-import os
+import asyncio
 import builtins
 import logging
-import asyncio
+import os
 import threading
 from datetime import datetime
 
 import uvicorn
-from news_extractor_engine.api import ApiServerManager
 from pymongo import MongoClient
 
+from news_extractor_engine.api import ApiServerManager
 from news_extractor_engine.cache.CacheServiceManager import CacheServiceManager
 from news_extractor_engine.engine.engine import Engine
 from news_extractor_engine.engine.feed import FeedReader
-from news_extractor_engine.model.feed import ArticleSource
+from news_extractor_engine.engine.scraper import ArticleInfoXpaths
+from news_extractor_engine.engine.SpiderTaskQue import SpiderTaskQue
 from news_extractor_engine.model.error.Environment import (
     EnvironmentVariableNotFoundException,
     InvalidEnvironmentVariableFormatException,
 )
-from news_extractor_engine.engine.scraper import ArticleInfoXpaths
-from news_extractor_engine.engine.SpiderTaskQue import SpiderTaskQue
+from news_extractor_engine.model.feed import ArticleSource
 from news_extractor_engine.utils.discord_tools import DiscordLogger
-from news_extractor_engine.api import ApiServerManager
 
 
 class App:
