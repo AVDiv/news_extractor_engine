@@ -52,7 +52,8 @@ class SpiderTaskQue(threading.Thread):
 
         self.__datalake_table = datalake_path
 
-        # Initialize the Kafka producer manager
+        # Initialize the Kafka producer manager with a fixed number of producers
+        # This creates a pool with 3 dedicated worker threads for Kafka publishing
         self.__kafka_manager = KafkaProducerManager(num_producers=3)
 
         # We'll initialize the thread pool when we start running, not during init
@@ -129,7 +130,7 @@ class SpiderTaskQue(threading.Thread):
 
     def __mine_article(self, url: str, source: ArticleSource):
         try:
-            print(f"Mining article: {url}")
+            logging.info(f"Mining article: {url}")
             article: Article = ArticleSpider.extract_data(url, source)
             article_dict = article.__dict__
             article_dict["id"] = article_dict["id"].__str__()
@@ -153,7 +154,7 @@ class SpiderTaskQue(threading.Thread):
                 else:
                     kafka_article[key] = value
 
-            # Try to publish to Kafka first
+            # Try to publish to Kafka using the queue-based producer
             kafka_success = self.__kafka_manager.publish_message(
                 key=str(article_dict["id"]),
                 value=kafka_article,
