@@ -57,20 +57,6 @@ class KafkaProducerManager:
         self.__KAFKA_CONFIG: Dict[str, Any] = {
             "bootstrap.servers": self.__KAFKA_BOOTSTRAP_SERVERS,
             "client.id": self.__KAFKA_CLIENT_ID_PREFIX,
-            # Add socket timeout to prevent hanging
-            "socket.timeout.ms": 10000,  # 10 second socket timeout
-            # Maximum number of threads the client will use
-            "internal.max.threads": 2,  # Limit internal threads per producer
-            # Message batching to reduce thread usage
-            "batch.num.messages": 500,  # Increase batch size
-            "linger.ms": 50,  # Wait up to 50ms to batch messages
-            # Set queue buffering to handle back pressure
-            "queue.buffering.max.messages": 100000,
-            "queue.buffering.max.ms": 100,
-            # Set message delivery timeout
-            "delivery.timeout.ms": 30000,  # 30 seconds
-            # Background poll configuration
-            "background.poll.interval.ms": 500,  # More frequent polling
         }
 
         self.__KAFKA_AUTH_ENABLED: bool = (
