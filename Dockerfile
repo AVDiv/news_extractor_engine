@@ -8,6 +8,11 @@ RUN apt update
 RUN apt install -y git curl
 ENV PATH="/root/.local/bin:$PATH"
 
+# Increase file descriptor limits
+RUN echo "* soft nofile 65536" >> /etc/security/limits.conf && \
+    echo "* hard nofile 65536" >> /etc/security/limits.conf && \
+    echo "session required pam_limits.so" >> /etc/pam.d/common-session
+
 # Copy project files
 COPY pyproject.toml .
 COPY uv.lock .
