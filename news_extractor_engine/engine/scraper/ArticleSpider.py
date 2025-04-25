@@ -1,18 +1,20 @@
-from dataclasses import dataclass
 import logging
+from dataclasses import dataclass
+
 # import threading
 from typing import Optional
-
-import aiohttp
-# import scrapy
-from bson.objectid import ObjectId
-import newspaper as news
-from bs4 import BeautifulSoup
-from lxml import etree
 from urllib.parse import urlparse
 
-from news_extractor_engine.model.feed import Article, ArticleSource
+import aiohttp
+import newspaper as news
+from bs4 import BeautifulSoup
+
+# import scrapy
+from bson.objectid import ObjectId
+from lxml import etree
+
 from news_extractor_engine.model.error.Scraper import InvalidDomainInArticleUrlException
+from news_extractor_engine.model.feed import Article, ArticleSource
 
 
 @dataclass
@@ -39,7 +41,9 @@ class ArticleScraper:
     async def fetch_article(self, url) -> dict:
         url_domain = urlparse(url).netloc
         if url_domain != self.domain:
-            raise InvalidDomainInArticleUrlException(f"{self.name}: URL domain {url_domain} does not match scraper domain {self.domain}")
+            raise InvalidDomainInArticleUrlException(
+                f"{self.name}: URL domain {url_domain} does not match scraper domain {self.domain}"
+            )
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
                 html = await response.text()
@@ -53,6 +57,7 @@ class ArticleScraper:
             if value:
                 article[key] = tree.xpath(value)
         return article
+
 
 # class ArticleSpider(scrapy.Spider):
 #     name: str = "ArticleSpider"
@@ -72,6 +77,7 @@ class ArticleScraper:
 #             'categories': self.article_xpaths['categories'],
 #         }
 #         logging.debug(f"Extracted data for: {data['title']}")
+
 
 class ArticleSpider:
     def __init__(self):
@@ -102,6 +108,6 @@ class ArticleSpider:
             content=article.text,
             tags=article.tags,
             categories=[],
-            images=article.images
+            images=article.images,
         )
         return article_data
