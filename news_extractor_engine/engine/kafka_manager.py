@@ -5,12 +5,12 @@ import threading
 import time
 from typing import Any, Dict, Optional, Tuple
 
-from confluent_kafka import Producer
+from confluent_kafka import KafkaException, Producer
 
 
 class KafkaProducerManager:
     """
-    Manages a fixed-size pool of Kafka producers for multiple worker threads
+    Manages a fixed-size pool of Kafka producers with failure handling
     """
 
     __KAFKA_BOOTSTRAP_SERVERS: str
@@ -18,12 +18,18 @@ class KafkaProducerManager:
     __KAFKA_PRODUCER_TOPIC: str
     __KAFKA_AUTH_ENABLED: bool
     __KAFKA_CONFIG: Dict[str, Any]
-    __MAX_PRODUCERS: int = 50  # Maximum number of producers to create
-    __PRODUCER_ACQUIRE_TIMEOUT: float = (
-        5.0  # Timeout in seconds to wait for an available producer
+    __MAX_PRODUCERS: int = (
+        10  # Reduced from 50 to 10 to prevent thread resource exhaustion
     )
+    __PRODUCER_ACQUIRE_TIMEOUT: float = 2.0  # Reduced timeout to detect issues faster
+    __MAX_PRODUCER_RETRIES: int = (
+        3  # Maximum number of retries when creating a producer
+    )
+    __RETRY_BACKOFF_BASE: float = 1.0  # Base backoff time in seconds
+    __RETRY_BACKOFF_MAX: float = 30.0  # Maximum backoff time in seconds
+    __THREAD_CREATION_ERRORS: int = 0  # Count of thread creation errors
 
-    def __init__(self, num_producers: int = 10):
+    def __init__(self, num_producers: int = 5):
         """
         Initialize the Kafka producer manager with a fixed pool size
 
@@ -42,10 +48,27 @@ class KafkaProducerManager:
         self.__KAFKA_PRODUCER_TOPIC: str = os.getenv(
             "KAFKA_PRODUCER_TOPIC", "news_articles"
         )
+
+        # Enhanced Kafka client configuration with thread management settings
         self.__KAFKA_CONFIG: Dict[str, Any] = {
             "bootstrap.servers": self.__KAFKA_BOOTSTRAP_SERVERS,
             "client.id": self.__KAFKA_CLIENT_ID_PREFIX,
+            # Add socket timeout to prevent hanging
+            "socket.timeout.ms": 10000,  # 10 second socket timeout
+            # Maximum number of threads the client will use
+            "internal.max.threads": 2,  # Limit internal threads per producer
+            # Message batching to reduce thread usage
+            "batch.num.messages": 500,  # Increase batch size
+            "linger.ms": 50,  # Wait up to 50ms to batch messages
+            # Set queue buffering to handle back pressure
+            "queue.buffering.max.messages": 100000,
+            "queue.buffering.max.ms": 100,
+            # Set message delivery timeout
+            "delivery.timeout.ms": 30000,  # 30 seconds
+            # Background poll configuration
+            "background.poll.interval.ms": 500,  # More frequent polling
         }
+
         self.__KAFKA_AUTH_ENABLED: bool = (
             os.getenv("KAFKA_AUTH_ENABLED", "false").lower() == "true"
         )
@@ -63,6 +86,8 @@ class KafkaProducerManager:
         self.producers = {}
         self.producer_usage = {}
         self.producer_condition = threading.Condition(self.lock)
+        self.producer_creation_errors = {}  # Track creation errors per producer
+        self.fallback_mode = False  # Flag to indicate we're in fallback mode
 
         logging.info("Connecting to Kafka server on %s", self.__KAFKA_BOOTSTRAP_SERVERS)
 
@@ -72,25 +97,109 @@ class KafkaProducerManager:
             f"Initializing pool with {initial_producers} Kafka producers (max: {self.__MAX_PRODUCERS})"
         )
 
-        # Initialize producers
+        # Initialize producers with error handling
+        successful_producers = 0
         for i in range(initial_producers):
-            producer_id = f"producer-{i}"
-            config = self.__KAFKA_CONFIG.copy()
-            config["client.id"] = f"{self.__KAFKA_CLIENT_ID_PREFIX}-producer-{i}"
-            self.producers[producer_id] = Producer(config)
-            self.producer_usage[producer_id] = False
+            try:
+                producer_id = f"producer-{i}"
+                config = self.__KAFKA_CONFIG.copy()
+                config["client.id"] = f"{self.__KAFKA_CLIENT_ID_PREFIX}-producer-{i}"
 
-    def get_producer(self) -> Tuple[str, Producer]:
+                # Try to create the producer with retries
+                producer = self._create_producer_with_retry(config)
+                if producer:
+                    self.producers[producer_id] = producer
+                    self.producer_usage[producer_id] = False
+                    successful_producers += 1
+            except Exception as e:
+                logging.error(f"Failed to initialize producer {i}: {str(e)}")
+
+        logging.info(
+            f"Successfully initialized {successful_producers} of {initial_producers} requested producers"
+        )
+
+        if successful_producers == 0:
+            logging.critical(
+                "CRITICAL: Could not create any Kafka producers. Messages will be lost!"
+            )
+            self.fallback_mode = True
+
+    def _create_producer_with_retry(self, config: Dict[str, Any]) -> Optional[Producer]:
+        """
+        Attempt to create a producer with retries and exponential backoff
+
+        Args:
+            config: Kafka producer configuration
+
+        Returns:
+            Producer instance if successful, None otherwise
+        """
+        retry_count = 0
+        while retry_count < self.__MAX_PRODUCER_RETRIES:
+            try:
+                return Producer(config)
+            except KafkaException as e:
+                retry_count += 1
+                if "Unable to create broker thread" in str(e):
+                    # This is a thread creation error - track it globally
+                    self.__class__.__THREAD_CREATION_ERRORS += 1
+                    logging.error(
+                        f"Thread creation error: {str(e)}. Error count: {self.__class__.__THREAD_CREATION_ERRORS}"
+                    )
+
+                    # If we've seen this error multiple times, reduce our pool size
+                    if (
+                        self.__class__.__THREAD_CREATION_ERRORS > 5
+                        and self.__class__.__MAX_PRODUCERS > 5
+                    ):
+                        old_max = self.__class__.__MAX_PRODUCERS
+                        self.__class__.__MAX_PRODUCERS = max(
+                            5, self.__class__.__MAX_PRODUCERS - 3
+                        )
+                        logging.warning(
+                            f"Reducing max producers from {old_max} to {self.__class__.__MAX_PRODUCERS} due to thread creation errors"
+                        )
+
+                # Calculate backoff time with exponential backoff
+                backoff_time = min(
+                    self.__RETRY_BACKOFF_MAX,
+                    self.__RETRY_BACKOFF_BASE * (2 ** (retry_count - 1)),
+                )
+
+                if retry_count < self.__MAX_PRODUCER_RETRIES:
+                    logging.warning(
+                        f"Producer creation attempt {retry_count} failed: {str(e)}. Retrying in {backoff_time:.1f}s..."
+                    )
+                    time.sleep(backoff_time)
+                else:
+                    logging.error(
+                        f"Failed to create producer after {self.__MAX_PRODUCER_RETRIES} attempts: {str(e)}"
+                    )
+            except Exception as e:
+                logging.error(f"Unexpected error creating producer: {str(e)}")
+                retry_count += 1
+                if retry_count < self.__MAX_PRODUCER_RETRIES:
+                    time.sleep(1)  # Simple delay for unexpected errors
+                else:
+                    break
+
+        return None
+
+    def get_producer(self) -> Tuple[str, Optional[Producer]]:
         """
         Get an available producer from the pool.
         If all producers are in use, wait for one to become available.
 
         Returns:
-            Tuple of (producer_id, producer)
+            Tuple of (producer_id, producer) or (None, None) if in fallback mode
 
         Raises:
             TimeoutError: If no producer becomes available within the timeout period
         """
+        # Quick check for fallback mode
+        if self.fallback_mode:
+            return None, None
+
         with self.producer_condition:
             # First attempt: try to find an available producer
             for producer_id, in_use in self.producer_usage.items():
@@ -99,19 +208,29 @@ class KafkaProducerManager:
                     return producer_id, self.producers[producer_id]
 
             # If we have fewer than MAX_PRODUCERS, create a new one
-            if len(self.producers) < self.__MAX_PRODUCERS:
-                new_producer_id = f"producer-{len(self.producers)}"
-                config = self.__KAFKA_CONFIG.copy()
-                config["client.id"] = (
-                    f"{self.__KAFKA_CLIENT_ID_PREFIX}-{new_producer_id}"
-                )
-                new_producer = Producer(config)
-                self.producers[new_producer_id] = new_producer
-                self.producer_usage[new_producer_id] = True
-                logging.info(
-                    f"Created new producer {new_producer_id} (total: {len(self.producers)}/{self.__MAX_PRODUCERS})"
-                )
-                return new_producer_id, new_producer
+            if len(self.producers) < self.__class__.__MAX_PRODUCERS:
+                try:
+                    new_producer_id = f"producer-{len(self.producers)}"
+                    config = self.__KAFKA_CONFIG.copy()
+                    config["client.id"] = (
+                        f"{self.__KAFKA_CLIENT_ID_PREFIX}-{new_producer_id}"
+                    )
+
+                    # Try to create a new producer
+                    new_producer = self._create_producer_with_retry(config)
+                    if new_producer:
+                        self.producers[new_producer_id] = new_producer
+                        self.producer_usage[new_producer_id] = True
+                        logging.info(
+                            f"Created new producer {new_producer_id} (total: {len(self.producers)}/{self.__class__.__MAX_PRODUCERS})"
+                        )
+                        return new_producer_id, new_producer
+                    else:
+                        logging.error(
+                            f"Failed to create new producer {new_producer_id}"
+                        )
+                except Exception as e:
+                    logging.error(f"Error creating new producer: {str(e)}")
 
             # All producers are in use and we're at the limit, wait for one to become available
             logging.warning(
@@ -147,6 +266,9 @@ class KafkaProducerManager:
         Args:
             producer_id: ID of the producer to release
         """
+        if producer_id is None:
+            return  # Nothing to do in fallback mode
+
         with self.producer_condition:
             if producer_id in self.producer_usage:
                 self.producer_usage[producer_id] = False
@@ -169,7 +291,16 @@ class KafkaProducerManager:
         """
         producer_id = None
         try:
+            # Get a producer with timeout handling
             producer_id, producer = self.get_producer()
+
+            # Check if we're in fallback mode or couldn't get a producer
+            if producer is None:
+                logging.warning(
+                    f"No Kafka producer available, message will not be sent: {key}"
+                )
+                return False
+
             encoded_value = json.dumps(value).encode("utf-8")
 
             # Set up delivery tracking
@@ -197,17 +328,22 @@ class KafkaProducerManager:
             )
 
             # Trigger any callbacks and wait briefly for delivery
-            producer.poll(0.1)
+            producer.poll(0)  # Non-blocking poll
 
             # If delivery was immediate, wait for callback to complete
             if not delivery_complete.is_set():
                 # Don't wait indefinitely - this is just to give a chance for immediate delivery
-                delivery_complete.wait(0.5)
+                delivery_complete.wait(0.2)  # Reduced wait time to improve throughput
 
             # Return based on delivery result - if we didn't get a callback yet,
             # we'll still consider it "sent" since it's in Kafka's queue
             return True
 
+        except TimeoutError:
+            logging.error(
+                f"Timeout getting Kafka producer, message will not be sent: {key}"
+            )
+            return False
         except Exception as e:
             logging.error(f"Failed to publish message to Kafka: {str(e)}")
             if producer_id:
@@ -218,7 +354,7 @@ class KafkaProducerManager:
         """Flush all producers"""
         for producer in self.producers.values():
             try:
-                producer.flush(timeout=5.0)
+                producer.flush(timeout=2.0)  # Reduced timeout to prevent hanging
             except Exception as e:
                 logging.error(f"Error flushing producer: {e}")
 
@@ -227,7 +363,7 @@ class KafkaProducerManager:
         with self.lock:
             for producer_id, producer in list(self.producers.items()):
                 try:
-                    producer.flush(timeout=5.0)
+                    producer.flush(timeout=2.0)  # Reduced timeout to prevent hanging
                     # Explicitly remove the producer
                     del self.producers[producer_id]
                     if producer_id in self.producer_usage:
@@ -256,5 +392,7 @@ class KafkaProducerManager:
                 "total_producers": total_producers,
                 "active_producers": active_producers,
                 "available_producers": total_producers - active_producers,
-                "max_producers": self.__MAX_PRODUCERS,
+                "max_producers": self.__class__.__MAX_PRODUCERS,
+                "thread_errors": self.__class__.__THREAD_CREATION_ERRORS,
+                "fallback_mode": self.fallback_mode,
             }
