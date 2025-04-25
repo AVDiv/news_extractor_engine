@@ -2,14 +2,15 @@ import json
 import logging
 import os
 import threading
-from typing import Any, Dict, Optional
+import time
+from typing import Any, Dict, Optional, Tuple
 
 from confluent_kafka import Producer
 
 
 class KafkaProducerManager:
     """
-    Manages a pool of Kafka producers for multiple worker threads
+    Manages a fixed-size pool of Kafka producers for multiple worker threads
     """
 
     __KAFKA_BOOTSTRAP_SERVERS: str
@@ -17,13 +18,17 @@ class KafkaProducerManager:
     __KAFKA_PRODUCER_TOPIC: str
     __KAFKA_AUTH_ENABLED: bool
     __KAFKA_CONFIG: Dict[str, Any]
+    __MAX_PRODUCERS: int = 50  # Maximum number of producers to create
+    __PRODUCER_ACQUIRE_TIMEOUT: float = (
+        5.0  # Timeout in seconds to wait for an available producer
+    )
 
-    def __init__(self, num_producers: int = 3):
+    def __init__(self, num_producers: int = 10):
         """
-        Initialize the Kafka producer manager
+        Initialize the Kafka producer manager with a fixed pool size
 
         Args:
-            num_producers: Number of producers to initialize
+            num_producers: Initial number of producers to initialize (will not exceed MAX_PRODUCERS)
         """
         # Kafka configuration
         self.__KAFKA_BOOTSTRAP_SERVERS: str = os.getenv(
@@ -57,53 +62,97 @@ class KafkaProducerManager:
         self.lock = threading.RLock()
         self.producers = {}
         self.producer_usage = {}
+        self.producer_condition = threading.Condition(self.lock)
 
         logging.info("Connecting to Kafka server on %s", self.__KAFKA_BOOTSTRAP_SERVERS)
 
+        # Cap the initial number of producers to the maximum allowed
+        initial_producers = min(num_producers, self.__MAX_PRODUCERS)
+        logging.info(
+            f"Initializing pool with {initial_producers} Kafka producers (max: {self.__MAX_PRODUCERS})"
+        )
+
         # Initialize producers
-        for i in range(num_producers):
+        for i in range(initial_producers):
             producer_id = f"producer-{i}"
             config = self.__KAFKA_CONFIG.copy()
             config["client.id"] = f"{self.__KAFKA_CLIENT_ID_PREFIX}-producer-{i}"
             self.producers[producer_id] = Producer(config)
             self.producer_usage[producer_id] = False
 
-    def get_producer(self) -> tuple[str, Producer]:
+    def get_producer(self) -> Tuple[str, Producer]:
         """
-        Get an available producer from the pool
+        Get an available producer from the pool.
+        If all producers are in use, wait for one to become available.
 
         Returns:
             Tuple of (producer_id, producer)
+
+        Raises:
+            TimeoutError: If no producer becomes available within the timeout period
         """
-        with self.lock:
+        with self.producer_condition:
+            # First attempt: try to find an available producer
             for producer_id, in_use in self.producer_usage.items():
                 if not in_use:
                     self.producer_usage[producer_id] = True
                     return producer_id, self.producers[producer_id]
 
-            # If all producers are in use, create a new one
-            new_producer_id = f"producer-{len(self.producers)}"
-            config = self.__KAFKA_CONFIG.copy()
-            config["client.id"] = f"{self.__KAFKA_CLIENT_ID_PREFIX}-{new_producer_id}"
-            new_producer = Producer(config)
-            self.producers[new_producer_id] = new_producer
-            self.producer_usage[new_producer_id] = True
-            logging.info(
-                f"Created new producer {new_producer_id} as all existing producers are busy"
+            # If we have fewer than MAX_PRODUCERS, create a new one
+            if len(self.producers) < self.__MAX_PRODUCERS:
+                new_producer_id = f"producer-{len(self.producers)}"
+                config = self.__KAFKA_CONFIG.copy()
+                config["client.id"] = (
+                    f"{self.__KAFKA_CLIENT_ID_PREFIX}-{new_producer_id}"
+                )
+                new_producer = Producer(config)
+                self.producers[new_producer_id] = new_producer
+                self.producer_usage[new_producer_id] = True
+                logging.info(
+                    f"Created new producer {new_producer_id} (total: {len(self.producers)}/{self.__MAX_PRODUCERS})"
+                )
+                return new_producer_id, new_producer
+
+            # All producers are in use and we're at the limit, wait for one to become available
+            logging.warning(
+                f"All {len(self.producers)} Kafka producers are in use. Waiting for one to become available..."
             )
-            return new_producer_id, new_producer
+
+            # Wait for a producer to become available with timeout
+            start_time = time.time()
+            while True:
+                # Wait for a notification that a producer might be available
+                self.producer_condition.wait(timeout=self.__PRODUCER_ACQUIRE_TIMEOUT)
+
+                # Check if any producer is now available
+                for producer_id, in_use in self.producer_usage.items():
+                    if not in_use:
+                        self.producer_usage[producer_id] = True
+                        logging.debug(f"Acquired producer {producer_id} after waiting")
+                        return producer_id, self.producers[producer_id]
+
+                # Check if we've exceeded our timeout
+                if time.time() - start_time > self.__PRODUCER_ACQUIRE_TIMEOUT:
+                    logging.error(
+                        f"Timeout waiting for an available Kafka producer. All {len(self.producers)} producers are busy."
+                    )
+                    raise TimeoutError(
+                        f"Timed out waiting for an available Kafka producer"
+                    )
 
     def release_producer(self, producer_id: str):
         """
-        Mark a producer as available
+        Mark a producer as available and notify waiting threads
 
         Args:
             producer_id: ID of the producer to release
         """
-        with self.lock:
+        with self.producer_condition:
             if producer_id in self.producer_usage:
                 self.producer_usage[producer_id] = False
                 logging.debug(f"Released producer {producer_id}")
+                # Notify one waiting thread that a producer is available
+                self.producer_condition.notify()
             else:
                 logging.warning(f"Attempted to release unknown producer: {producer_id}")
 
@@ -190,3 +239,22 @@ class KafkaProducerManager:
             self.producers.clear()
             self.producer_usage.clear()
             logging.info("All Kafka producers have been closed")
+
+    def get_producer_stats(self) -> Dict[str, Any]:
+        """
+        Get statistics about the producer pool
+
+        Returns:
+            Dictionary with producer pool statistics
+        """
+        with self.lock:
+            total_producers = len(self.producers)
+            active_producers = sum(
+                1 for in_use in self.producer_usage.values() if in_use
+            )
+            return {
+                "total_producers": total_producers,
+                "active_producers": active_producers,
+                "available_producers": total_producers - active_producers,
+                "max_producers": self.__MAX_PRODUCERS,
+            }
