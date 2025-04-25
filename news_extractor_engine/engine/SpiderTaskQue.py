@@ -8,7 +8,6 @@ from datetime import datetime
 import pandas as pd
 import zmq
 from bson.objectid import ObjectId
-from confluent_kafka import Producer
 
 # from deltalake import DeltaTable
 from deltalake.writer import write_deltalake

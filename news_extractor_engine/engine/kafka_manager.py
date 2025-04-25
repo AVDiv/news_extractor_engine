@@ -15,6 +15,7 @@ class KafkaProducerManager:
     __KAFKA_BOOTSTRAP_SERVERS: str
     __KAFKA_CLIENT_ID_PREFIX: str
     __KAFKA_PRODUCER_TOPIC: str
+    __KAFKA_AUTH_ENABLED: bool
     __KAFKA_CONFIG: Dict[str, Any]
 
     def __init__(self, num_producers: int = 3):
@@ -40,6 +41,18 @@ class KafkaProducerManager:
             "bootstrap.servers": self.__KAFKA_BOOTSTRAP_SERVERS,
             "client.id": self.__KAFKA_CLIENT_ID_PREFIX,
         }
+        self.__KAFKA_AUTH_ENABLED: bool = (
+            os.getenv("KAFKA_AUTH_ENABLED", "false").lower() == "true"
+        )
+        if self.__KAFKA_AUTH_ENABLED:
+            self.__KAFKA_CONFIG["sasl.username"] = os.getenv("KAFKA_AUTH_USERNAME", "")
+            self.__KAFKA_CONFIG["sasl.password"] = os.getenv("KAFKA_AUTH_PASSWORD", "")
+            self.__KAFKA_CONFIG["sasl.mechanism"] = os.getenv(
+                "KAFKA_AUTH_MECHANISM", "PLAIN"
+            )
+            self.__KAFKA_CONFIG["security.protocol"] = os.getenv(
+                "KAFKA_SECURITY_PROTOCOL", "PLAINTEXT"
+            )
 
         self.lock = threading.RLock()
         self.producers = {}
