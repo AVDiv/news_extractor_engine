@@ -195,6 +195,11 @@ class App:
             self.__stop_cache_service_manager()  # Stop cache service manager
             await self.__destruct_all_tasks()  # Stop all feed tasks
             await self.__stop_api_server()  # Stop the API server
+
+            # Close ZMQ socket pools to prevent resource leaks
+            if hasattr(self, "__engine") and self.__engine:
+                self.__engine.close_socket_pools()
+
         except Exception as e:
             logging.error(
                 f"Exception occured: ({e.__class__.__name__}) {e.__str__()}",

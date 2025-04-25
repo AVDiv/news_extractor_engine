@@ -1,9 +1,9 @@
 import asyncio
 from dataclasses import dataclass
-import aiohttp
-import feedparser
 from datetime import datetime, timedelta
 
+import aiohttp
+import feedparser
 import zmq
 
 from news_extractor_engine.model.feed import ArticleSource
@@ -46,7 +46,7 @@ class FeedReader:
     min_refresh_interval: float
     __has_updated_since_last_request: bool = False
     __last_feed_item_hash: int = 0
-    __cache_service_socket: zmq.Socket
+    __cache_service_socket: zmq.Socket = None
 
     def __init__(self, source: ArticleSource, refresh_time: float = 15.0) -> None:
         """The FeedReader class is used to fetch and parse RSS feeds from a given source.
@@ -65,8 +65,15 @@ class FeedReader:
             raise TypeError("source must be an instance of ArticleSource")
 
     def set_cache_service_socket(self, socket: zmq.Socket):
+        """Set the ZMQ socket used for cache communication.
+
+        This socket is managed externally by a socket pool.
+
+        Args:
+            socket (zmq.Socket): ZMQ socket for cache service communication
+        """
         self.__cache_service_socket = socket
-        self.__cache_service_socket.connect("tcp://localhost:5558")
+        # No need to connect the socket here as it's already connected by the socket pool
 
     def __update_feed_update_time(self, feed: feedparser.FeedParserDict):
         new_update_time = None
@@ -104,6 +111,9 @@ class FeedReader:
             self.__feed_last_updated_on = new_update_time
 
     async def fetch_feed(self) -> feedparser.FeedParserDict:
+        if not self.__cache_service_socket:
+            raise ValueError("Cache service socket not set")
+
         async with aiohttp.ClientSession() as session:
             async with session.get(self.source.rss_url) as response:
                 feed_xml = await response.text()
