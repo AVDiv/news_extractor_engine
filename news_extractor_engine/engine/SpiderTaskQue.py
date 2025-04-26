@@ -134,6 +134,7 @@ class SpiderTaskQue(threading.Thread):
             article: Article = ArticleSpider.extract_data(url, source)
             article_dict = article.__dict__
             article_dict["id"] = article_dict["id"].__str__()
+            article_dict["source_id"] = source.id.__str__()  # Add source ID for Kafka
             article_dict["source"] = article_dict["source"].name
             article_dict["publication_date"] = (
                 article_dict["publication_date"].strftime("%Y-%m-%dT%H:%M:%S.%f%z")
